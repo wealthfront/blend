@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item type="id" name="additiveAlpha" />
+  <item type="id" name="additiveTranslationX" />
+  <item type="id" name="additiveTranslationY" />
+  <item type="id" name="additiveTranslationZ" />
+  <item type="id" name="additiveX" />
+  <item type="id" name="additiveY" />
+  <item type="id" name="additiveZ" />
+  <item type="id" name="additiveRotation" />
+  <item type="id" name="additiveRotationX" />
+  <item type="id" name="additiveRotationY" />
+  <item type="id" name="additiveScaleX" />
+  <item type="id" name="additiveScaleY" />
+  <item type="id" name="additiveElevation" />
+  <item type="id" name="additiveWidth" />
+  <item type="id" name="additiveHeight" />
+  <item type="id" name="additivePaddingLeft" />
+  <item type="id" name="additivePaddingRight" />
+  <item type="id" name="additivePaddingTop" />
+  <item type="id" name="additivePaddingBottom" />
+  <item type="id" name="additiveMarginLeft" />
+  <item type="id" name="additiveMarginRight" />
+  <item type="id" name="additiveMarginTop" />
+  <item type="id" name="additiveMarginBottom" />
+  <item type="id" name="additiveBackgroundColor" />
+  <item type="id" name="additiveTextColor" />
+  <item type="id" name="additiveProgress" />
+  <item type="id" name="additiveScrollY" />
+  <item type="id" name="additiveScrollX" />
+</resources>
