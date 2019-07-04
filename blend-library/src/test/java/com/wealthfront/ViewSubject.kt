@@ -7,7 +7,7 @@ import com.google.common.truth.Subject.Factory
 import com.google.common.truth.Truth.assertAbout
 import com.wealthfront.ViewSubject.Companion.VIEW_SUBJECT_FACTORY
 
-class ViewSubject(failureMetadata: FailureMetadata, view: View?) : Subject<ViewSubject, View?>(failureMetadata, view) {
+internal class ViewSubject(failureMetadata: FailureMetadata, view: View?) : Subject<ViewSubject, View?>(failureMetadata, view) {
 
   companion object {
     val VIEW_SUBJECT_FACTORY: Factory<ViewSubject, View?> = Factory { failureMetadata, view ->
@@ -47,5 +47,5 @@ class ViewSubject(failureMetadata: FailureMetadata, view: View?) : Subject<ViewS
 
 object ViewAssertions {
   @JvmStatic
-  fun assertThatView(view: View?): ViewSubject = assertAbout(VIEW_SUBJECT_FACTORY).that(view)
+  internal fun assertThatView(view: View?): ViewSubject = assertAbout(VIEW_SUBJECT_FACTORY).that(view)
 }
