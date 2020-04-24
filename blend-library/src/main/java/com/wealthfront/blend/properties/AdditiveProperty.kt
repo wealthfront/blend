@@ -10,8 +10,8 @@ import kotlin.math.roundToInt
  * To properly blend animations, it includes methods like [getFutureValue], [addInterruptableEndActions], and
  * [getAnimationData].
  *
- * We store data on running animations ([AnimationData]) on each subject, ideally. This systematically prevents leaks of
- * references to [Subject]s. The mechanism for storing is described by the implementation of [getAnimationData]
+ * We store data on committed animations ([AnimationData]) on each subject, ideally. This systematically prevents leaks
+ * of references to [Subject]s. The mechanism for storing is described by the implementation of [getAnimationData]
  */
 interface AdditiveProperty<in Subject> {
 
@@ -52,19 +52,19 @@ interface AdditiveProperty<in Subject> {
   /**
    * Perform any setup tasks when an animation on this property starts.
    */
-  fun setUpOnAnimationStart(subject: Subject) { }
+  fun setUpOnAnimationCommitted(subject: Subject) { }
 
   /**
-   * Add a running animation to the [subject]'s [AnimationData] for this property.
+   * Add a committed animation to the [subject]'s [AnimationData] for this property.
    */
-  fun addRunningAnimation(subject: Subject, animation: SinglePropertyAnimation<*>) =
-      getAnimationData(subject).addRunningAnimation(animation)
+  fun addCommittedAnimation(subject: Subject, animation: SinglePropertyAnimation<*>) =
+      getAnimationData(subject).addCommittedAnimation(animation)
 
   /**
-   * Remove a running animation to the [subject]'s [AnimationData] for this property.
+   * Remove a committed animation from the [subject]'s [AnimationData] for this property.
    */
-  fun removeRunningAnimator(subject: Subject, animation: SinglePropertyAnimation<*>) =
-    getAnimationData(subject).removeRunningAnimation(animation)
+  fun removeCommittedAnimation(subject: Subject, animation: SinglePropertyAnimation<*>) =
+      getAnimationData(subject).removeCommittedAnimation(animation)
 
   /**
    * Add [endActions] to the [subject]'s [AnimationData] for this property so they can be cancelled if another
@@ -79,7 +79,7 @@ interface AdditiveProperty<in Subject> {
    */
   fun runEndActions(subject: Subject, animation: SinglePropertyAnimation<*>) {
     val animationData = getAnimationData(subject)
-    if (animation == animationData.runningAnimations.lastOrNull()) {
+    if (animation == animationData.committedAnimations.lastOrNull()) {
       animationData.interruptableEndActions.forEach { it() }
       animationData.interruptableEndActions.clear()
     }

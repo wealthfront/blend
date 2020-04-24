@@ -104,9 +104,19 @@ open class BlendableAnimator : Animator() {
   open fun commitFutureValuesIfNotCommitted() {
     if (!valuesCommitted) {
       beforeStartActions.forEach { it() }
-      animations.forEach { it.setUpOnAnimationStart(this) }
+      animations.forEach { it.setUpOnAnimationCommitted(this) }
     }
     valuesCommitted = true
+  }
+
+  /**
+   * Mark all [animations] as part of a fully-committed set of animations.
+   *
+   * This step is necessary for individual animations in a set to not remove each other when being committing.
+   */
+  open fun markAnimationsAsFullyCommitted() {
+    beforeStartActions.forEach { it() }
+    animations.forEach { it.isPartOfAFullyCommittedSet = true }
   }
 
   override fun start() {
@@ -125,6 +135,7 @@ open class BlendableAnimator : Animator() {
     })
 
     commitFutureValuesIfNotCommitted()
+    markAnimationsAsFullyCommitted()
     if (repeatCount > 0) {
       cancelAnimatorOnViewsDetached()
     }
