@@ -23,13 +23,14 @@ class AnimationDemoView @JvmOverloads constructor(
   @VisibleForTesting var topY = context.resources.getDimension(R.dimen.normalPadding)
   private var _bottomY: Float? = null
   @VisibleForTesting var bottomY: Float
-    get() = _bottomY ?: height - demoCircle.height - topY
+    get() = _bottomY ?: label.y - demoCircle.height - topY
     set(newY) {
       _bottomY = newY
     }
 
   var demoCircle: View by bindView(R.id.demoCircle)
   var demoCircle2: View by bindView(R.id.demoCircle2)
+  var label: View by bindView(R.id.label)
 
   @VisibleForTesting internal var blend: Blend
 
@@ -80,5 +81,5 @@ class AnimationDemoView @JvmOverloads constructor(
   }.start()
 }
 
-private const val FLOAT_TOLERANCE = 1f
+private const val FLOAT_TOLERANCE = 10f
 private infix fun Float?.isCloseEnoughTo(other: Float) = this != null && (this - other).absoluteValue < FLOAT_TOLERANCE
