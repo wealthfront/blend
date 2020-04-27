@@ -13,6 +13,7 @@ import Version.ktxVersion
 import Version.materialVersion
 import Version.mockitoVersion
 import Version.robolectricVersion
+import Version.testSupportVersion
 import Version.truthVersion
 import org.gradle.api.JavaVersion
 
@@ -31,6 +32,7 @@ object Libs {
   val material = "com.google.android.material:material:$materialVersion"
   val inject = "javax.inject:javax.inject:$javaInject"
   val jsr305 = "com.google.code.findbugs:jsr305:$jsrVersion"
+  val testCore = "androidx.test:core:$testSupportVersion"
   val mockitoCore = "org.mockito:mockito-core:$mockitoVersion"
   val junit = "junit:junit:$junitVersion"
   val truth = "com.google.truth:truth:$truthVersion"
@@ -59,6 +61,7 @@ object Version {
   val junitVersion = "4.12"
   val robolectricVersion = "4.3.1"
   val jsrVersion = "3.0.2"
+  val testSupportVersion="1.2.0"
   val mockitoVersion = "2.23.4"
   val espressoVersion = "3.2.0"
   val androidTestExtVersion = "1.1.1"

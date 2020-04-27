@@ -18,7 +18,6 @@ dependencies {
   implementation(Libs.robolectric) {
     exclude(group = "commons-logging", module = "commons-logging")
     exclude(group = "org.apache.httpcomponents", module = "httpclient")
-    exclude(group = "org.apache.maven")
   }
 }
 

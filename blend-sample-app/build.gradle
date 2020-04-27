@@ -33,6 +33,13 @@ android {
     sourceCompatibility Version.javaVersion
     targetCompatibility Version.javaVersion
   }
+
+  testOptions {
+    unitTests {
+      includeAndroidResources = true
+      returnDefaultValues = true
+    }
+  }
 }
 
 dependencies {
@@ -43,8 +50,14 @@ dependencies {
   implementation(Libs.ktx)
   implementation(Libs.constraintLayout)
   implementation(Libs.material)
-  testImplementation(Libs.junit)
   testImplementation(project(":blend-test"))
+  testImplementation(Libs.junit)
+  testImplementation(Libs.truth)
+  testImplementation(Libs.testCore)
+  testImplementation(Libs.robolectric) {
+    exclude(group: "commons-logging", module: "commons-logging")
+    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+  }
   androidTestImplementation(Libs.androidTestExt)
   androidTestImplementation(Libs.espresso)
 }

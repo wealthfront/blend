@@ -9,15 +9,6 @@ dependencies {
   implementation(Libs.kotlinStdLib)
   implementation(Libs.inject)
   implementation(Libs.jsr305)
-
-  implementation(Libs.mockitoCore)
-  implementation(Libs.junit)
-  implementation(Libs.truth)
-  implementation(Libs.robolectric) {
-    exclude(group = "commons-logging", module = "commons-logging")
-    exclude(group = "org.apache.httpcomponents", module = "httpclient")
-    exclude(group = "org.apache.maven")
-  }
 }
 
 android {
