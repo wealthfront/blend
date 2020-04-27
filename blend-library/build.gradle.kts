@@ -17,6 +17,7 @@ dependencies {
   testImplementation(Libs.robolectric) {
     exclude(group = "commons-logging", module = "commons-logging")
     exclude(group = "org.apache.httpcomponents", module = "httpclient")
+    exclude(group = "org.apache.maven")
   }
 }
 
@@ -25,6 +26,12 @@ android {
   defaultConfig {
     minSdkVersion(Version.minSdkVersion)
     targetSdkVersion(Version.targetSdkVersion)
+
+    javaCompileOptions {
+      annotationProcessorOptions {
+        includeCompileClasspath = true
+      }
+    }
   }
 
   compileOptions {

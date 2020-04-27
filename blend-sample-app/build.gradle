@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+  compileSdkVersion 29
+  buildToolsVersion "29.0.2"
+
+  defaultConfig {
+    applicationId "com.wealthfront.blend.sample"
+    minSdkVersion 21
+    targetSdkVersion 29
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    javaCompileOptions {
+      annotationProcessorOptions {
+        includeCompileClasspath = true
+      }
+    }
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility Version.javaVersion
+    targetCompatibility Version.javaVersion
+  }
+}
+
+dependencies {
+  implementation(project(":blend-library"))
+  implementation(fileTree(dir: 'libs', include: ['*.jar']))
+  implementation(Libs.kotlinStdLib)
+  implementation(Libs.appCompat)
+  implementation(Libs.ktx)
+  implementation(Libs.constraintLayout)
+  implementation(Libs.material)
+  testImplementation(Libs.junit)
+  testImplementation(project(":blend-test"))
+  androidTestImplementation(Libs.androidTestExt)
+  androidTestImplementation(Libs.espresso)
+}
