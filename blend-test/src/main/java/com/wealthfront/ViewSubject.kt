@@ -45,7 +45,7 @@ internal class ViewSubject(failureMetadata: FailureMetadata, view: View?) : Subj
   }
 }
 
-object ViewAssertions {
+internal object ViewAssertions {
   @JvmStatic
   internal fun assertThatView(view: View?): ViewSubject = assertAbout(VIEW_SUBJECT_FACTORY).that(view)
 }
