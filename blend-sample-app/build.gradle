@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+  compileSdkVersion 29
+  buildToolsVersion "29.0.2"
+
+  defaultConfig {
+    applicationId "com.wealthfront.blend.sample"
+    minSdkVersion 21
+    targetSdkVersion 29
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    javaCompileOptions {
+      annotationProcessorOptions {
+        includeCompileClasspath = true
+      }
+    }
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility Version.javaVersion
+    targetCompatibility Version.javaVersion
+  }
+
+  testOptions {
+    unitTests {
+      includeAndroidResources = true
+      returnDefaultValues = true
+    }
+  }
+}
+
+dependencies {
+  implementation(project(":blend-library"))
+  implementation(fileTree(dir: 'libs', include: ['*.jar']))
+  implementation(Libs.kotlinStdLib)
+  implementation(Libs.appCompat)
+  implementation(Libs.ktx)
+  implementation(Libs.constraintLayout)
+  implementation(Libs.material)
+  testImplementation(project(":blend-test"))
+  testImplementation(Libs.junit)
+  testImplementation(Libs.truth)
+  testImplementation(Libs.testCore)
+  testImplementation(Libs.robolectric) {
+    exclude(group: "commons-logging", module: "commons-logging")
+    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+  }
+  androidTestImplementation(Libs.androidTestExt)
+  androidTestImplementation(Libs.espresso)
+}

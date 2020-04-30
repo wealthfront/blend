@@ -9,14 +9,6 @@ dependencies {
   implementation(Libs.kotlinStdLib)
   implementation(Libs.inject)
   implementation(Libs.jsr305)
-
-  implementation(Libs.mockitoCore)
-  implementation(Libs.junit)
-  implementation(Libs.truth)
-  implementation(Libs.robolectric) {
-    exclude(group = "commons-logging", module = "commons-logging")
-    exclude(group = "org.apache.httpcomponents", module = "httpclient")
-  }
 }
 
 android {
@@ -24,6 +16,12 @@ android {
   defaultConfig {
     minSdkVersion(Version.minSdkVersion)
     targetSdkVersion(Version.targetSdkVersion)
+
+    javaCompileOptions {
+      annotationProcessorOptions {
+        includeCompileClasspath = true
+      }
+    }
   }
 
   compileOptions {
