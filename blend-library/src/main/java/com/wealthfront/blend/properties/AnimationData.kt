@@ -25,7 +25,7 @@ class AnimationData {
    * Get the value of this property as if all committed animations have finished.
    */
   val futureValue: Float?
-    get() = committedAnimations.lastOrNull()?.targetValue
+    get() = committedAnimations.lastOrNull { it.isStarted }?.targetValue
 
   /**
    * Register a new animation that has started. This cancels any [interruptableEndActions] that we have, since a new
@@ -39,8 +39,11 @@ class AnimationData {
       committedAnimations -= committedAnimations.last()
     }
     isLatestAnimationDone = false
-    committedAnimations.removeAll {
+    committedAnimations.filter {
       !it.isStarted && it.isPartOfAFullyCommittedSet
+    }.forEach {
+      it.markCancelled()
+      committedAnimations.remove(it)
     }
     committedAnimations += animation
     interruptableEndActions.clear()

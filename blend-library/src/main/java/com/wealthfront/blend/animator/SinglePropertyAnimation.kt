@@ -34,7 +34,7 @@ class SinglePropertyAnimation<Subject>(
   /**
    * Whether this animation has started running. Note that it can be committed (i.e. queued) and not started.
    */
-  val isStarted: Boolean = animator?.isStarted ?: false
+  val isStarted: Boolean get() = animator?.isStarted ?: false
   /**
    * Whether the set that this animation belongs to is done committing all of its animations. Useful for figuring out
    * when to cancel unstarted (but committed) animations.
