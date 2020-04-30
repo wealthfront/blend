@@ -5,19 +5,10 @@ plugins {
 }
 
 dependencies {
-  implementation(project(":support"))
   implementation(Libs.appCompat)
   implementation(Libs.kotlinStdLib)
   implementation(Libs.inject)
   implementation(Libs.jsr305)
-
-  testImplementation(Libs.mockitoCore)
-  testImplementation(Libs.junit)
-  testImplementation(Libs.truth)
-  testImplementation(Libs.robolectric) {
-    exclude(group = "commons-logging", module = "commons-logging")
-    exclude(group = "org.apache.httpcomponents", module = "httpclient")
-  }
 }
 
 android {
@@ -47,5 +38,3 @@ android {
 allOpen {
   annotation("com.wealthfront.ktx.Mockable")
 }
-
-apply(from = rootProject.file("gradle/gradle-mvn-push.gradle"))

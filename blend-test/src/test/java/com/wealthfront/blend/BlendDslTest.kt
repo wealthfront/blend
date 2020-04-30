@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat.getColor
 import com.google.common.truth.Truth.assertThat
+import com.wealthfront.blend.test.R
 import com.wealthfront.ViewAssertions.assertThatView
 import com.wealthfront.blend.animator.BlendableAnimator
 import com.wealthfront.blend.mock.ImmediateBlend

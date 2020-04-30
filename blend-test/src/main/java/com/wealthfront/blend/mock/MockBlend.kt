@@ -1,6 +1,7 @@
 package com.wealthfront.blend.mock
 
 import android.animation.Animator
+import android.annotation.SuppressLint
 import android.view.View
 import com.wealthfront.blend.Blend
 import com.wealthfront.blend.animator.SinglePropertyAnimation
@@ -10,6 +11,7 @@ import com.wealthfront.blend.animator.SinglePropertyAnimation
  *
  * To verify animations, call [MockBlend.assertThat]. See [ViewBlendValidator]
  */
+@SuppressLint("CheckResult")
 class MockBlend : Blend() {
 
   val animators: MutableList<MockBlendableAnimator> = mutableListOf()
