@@ -1,1 +1,3 @@
 include ':blend-library'
+include ':blend-test'
+include ':support'

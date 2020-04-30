@@ -1,6 +1,7 @@
 package com.wealthfront.blend.mock
 
 import android.animation.Animator
+import android.annotation.SuppressLint
 import com.wealthfront.blend.Blend
 import com.wealthfront.blend.animator.BlendableAnimator
 import com.wealthfront.blend.builder.AnimatorSetWrapper
@@ -11,6 +12,7 @@ import com.wealthfront.blend.builder.AnimatorSetWrapper
  * Tests requiring animation listeners should use this to avoid the robolectric issue described here:
  * https://github.com/robolectric/robolectric/issues/2930
  */
+@SuppressLint("CheckResult")
 class ImmediateBlend : Blend() {
 
   override fun createAnimatorSet(animator: Animator): AnimatorSetWrapper {
