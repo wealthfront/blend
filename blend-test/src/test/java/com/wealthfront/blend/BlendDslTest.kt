@@ -14,8 +14,8 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat.getColor
 import com.google.common.truth.Truth.assertThat
 import com.wealthfront.ALPHA_FULL
-import com.wealthfront.ThemedApplicationProvider.application
 import com.wealthfront.ViewAssertions.assertThatView
+import com.wealthfront.application
 import com.wealthfront.blend.animator.BlendableAnimator
 import com.wealthfront.blend.dsl.collapse
 import com.wealthfront.blend.dsl.crossfadeWith
@@ -340,7 +340,7 @@ class BlendDslTest {
       return animationDatas[subject] ?: AnimationData().also { animationDatas[subject] = it }
     }
 
-    override fun setUpOnAnimationCommitted(subject: TestObject) {
+    override fun setUpOnAnimationQueued(subject: TestObject) {
       addInterruptableEndActions(subject, {
         animationDatas.remove(subject)
       })

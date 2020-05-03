@@ -44,7 +44,7 @@ fun <Subject : Any> makeExternalAdditiveViewProperty(
           interpolateAction(startValue, endValue, timeFraction, subject)
         }
 
-    override fun setUpOnAnimationCommitted(subject: Subject) {
+    override fun setUpOnAnimationQueued(subject: Subject) {
       setUpAction?.invoke(subject)
     }
   }
@@ -99,7 +99,7 @@ fun <Subject : View> makeAdditiveViewProperty(
         interpolateAction(startValue, endValue, timeFraction, subject)
       }
 
-    override fun setUpOnAnimationCommitted(subject: Subject) {
+    override fun setUpOnAnimationQueued(subject: Subject) {
       setUpAction?.invoke(subject)
     }
   }
@@ -157,7 +157,7 @@ internal fun wrapViewProperty(
 
     override fun getAnimationData(subject: View): AnimationData = subject.getAnimationData(id)
 
-    override fun setUpOnAnimationCommitted(subject: View) {
+    override fun setUpOnAnimationQueued(subject: View) {
       setUpAction?.invoke(subject)
     }
   }

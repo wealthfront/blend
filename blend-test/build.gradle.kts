@@ -20,6 +20,8 @@ dependencies {
     exclude(group = "commons-logging", module = "commons-logging")
     exclude(group = "org.apache.httpcomponents", module = "httpclient")
   }
+
+  testImplementation(Libs.testCore)
 }
 
 android {
