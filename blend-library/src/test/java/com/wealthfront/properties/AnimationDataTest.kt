@@ -34,7 +34,15 @@ class AnimationDataTest {
   @Test
   fun getFutureValue_futureValue() {
     val firstAnimation = SinglePropertyAnimation(view, property, 10f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyQueuedSet = true
+      }
     val latestAnimation = SinglePropertyAnimation(view, property, 20f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyQueuedSet = true
+      }
     animationData.addQueuedAnimation(firstAnimation)
     animationData.addQueuedAnimation(latestAnimation)
     assertThat(animationData.futureValue).isWithin(0.01f).of(20f)
@@ -43,7 +51,15 @@ class AnimationDataTest {
   @Test
   fun getFutureValue_futureValue_animationEndedEarly() {
     val firstAnimation = SinglePropertyAnimation(view, property, 10f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyQueuedSet = true
+      }
     val latestAnimation = SinglePropertyAnimation(view, property, 20f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyQueuedSet = true
+      }
     animationData.addQueuedAnimation(firstAnimation)
     animationData.addQueuedAnimation(latestAnimation)
     animationData.removeQueuedAnimation(latestAnimation)
@@ -53,7 +69,15 @@ class AnimationDataTest {
   @Test
   fun getFutureValue_futureValue_animationEndedEarly_clear() {
     val firstAnimation = SinglePropertyAnimation(view, property, 10f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyQueuedSet = true
+      }
     val latestAnimation = SinglePropertyAnimation(view, property, 20f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyQueuedSet = true
+      }
     animationData.addQueuedAnimation(firstAnimation)
     animationData.addQueuedAnimation(latestAnimation)
     animationData.removeQueuedAnimation(latestAnimation)
@@ -78,14 +102,15 @@ class AnimationDataTest {
   @Test
   fun doNotRemoveChainedAnimation_newAnimationAdded_chainedAnimationIsPartOfUnfinishedSet() {
     val delayedAnimation = SinglePropertyAnimation(view, property, 10f)
-        .apply {
-          animator = unstartedAnimator
-          isPartOfAFullyQueuedSet = false
-        }
+      .apply {
+        animator = unstartedAnimator
+        isPartOfAFullyQueuedSet = false
+      }
     val newAnimation = SinglePropertyAnimation(view, property, 20f)
     animationData.addQueuedAnimation(delayedAnimation)
     animationData.addQueuedAnimation(newAnimation)
     animationData.removeQueuedAnimation(newAnimation)
+    delayedAnimation.animator = startedAnimator
     assertThat(animationData.futureValue).isNotNull()
   }
 }
