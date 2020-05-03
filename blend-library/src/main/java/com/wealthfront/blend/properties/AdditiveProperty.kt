@@ -10,7 +10,7 @@ import kotlin.math.roundToInt
  * To properly blend animations, it includes methods like [getFutureValue], [addInterruptableEndActions], and
  * [getAnimationData].
  *
- * We store data on committed animations ([AnimationData]) on each subject, ideally. This systematically prevents leaks
+ * We store data on queued animations ([AnimationData]) on each subject, ideally. This systematically prevents leaks
  * of references to [Subject]s. The mechanism for storing is described by the implementation of [getAnimationData]
  */
 interface AdditiveProperty<in Subject> {
@@ -52,19 +52,19 @@ interface AdditiveProperty<in Subject> {
   /**
    * Perform any setup tasks when an animation on this property starts.
    */
-  fun setUpOnAnimationCommitted(subject: Subject) { }
+  fun setUpOnAnimationQueued(subject: Subject) { }
 
   /**
-   * Add a committed animation to the [subject]'s [AnimationData] for this property.
+   * Add a queued animation to the [subject]'s [AnimationData] for this property.
    */
-  fun addCommittedAnimation(subject: Subject, animation: SinglePropertyAnimation<*>) =
-      getAnimationData(subject).addCommittedAnimation(animation)
+  fun addQueuedAnimation(subject: Subject, animation: SinglePropertyAnimation<*>) =
+      getAnimationData(subject).addQueuedAnimation(animation)
 
   /**
-   * Remove a committed animation from the [subject]'s [AnimationData] for this property.
+   * Remove a queued animation from the [subject]'s [AnimationData] for this property.
    */
-  fun removeCommittedAnimation(subject: Subject, animation: SinglePropertyAnimation<*>) =
-      getAnimationData(subject).removeCommittedAnimation(animation)
+  fun removeQueuedAnimation(subject: Subject, animation: SinglePropertyAnimation<*>) =
+      getAnimationData(subject).removeQueuedAnimation(animation)
 
   /**
    * Add [endActions] to the [subject]'s [AnimationData] for this property so they can be cancelled if another
@@ -79,7 +79,7 @@ interface AdditiveProperty<in Subject> {
    */
   fun runEndActions(subject: Subject, animation: SinglePropertyAnimation<*>) {
     val animationData = getAnimationData(subject)
-    if (animation == animationData.committedAnimations.lastOrNull()) {
+    if (animation == animationData.queuedAnimations.lastOrNull()) {
       animationData.interruptableEndActions.forEach { it() }
       animationData.interruptableEndActions.clear()
     }

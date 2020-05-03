@@ -5,7 +5,7 @@ import com.wealthfront.blend.animator.BlendableAnimator
 class ImmediateBlendableAnimator : BlendableAnimator() {
 
   override fun start() {
-    commitFutureValuesIfNotCommitted()
+    queueAnimationsIfNotAlreadyQueued()
     innerAnimator.listeners?.forEach { it.onAnimationStart(innerAnimator) }
     animations.forEach { it.applyChanges(1f) }
     everyFrameActions.forEach { it() }

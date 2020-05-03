@@ -145,7 +145,7 @@ class BlendableAnimatorTest {
     secondBlendableAnimator.interpolator = LinearInterpolator()
     whenever(X.getCurrentValue(subject)).thenReturn(0f)
 
-    blendableAnimator.commitFutureValuesIfNotCommitted()
+    blendableAnimator.queueAnimationsIfNotAlreadyQueued()
     secondBlendableAnimator.start()
 
     verify(secondValueAnimator).addUpdateListener(animatorUpdateListenerCaptor.capture())

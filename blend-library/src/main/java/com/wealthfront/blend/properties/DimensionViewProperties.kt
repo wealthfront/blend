@@ -35,7 +35,7 @@ object DimensionViewProperties {
 
     override fun getAnimationData(subject: View): AnimationData = subject.getAnimationData(id)
 
-    override fun setUpOnAnimationCommitted(subject: View) {
+    override fun setUpOnAnimationQueued(subject: View) {
       if (subject.visibility == GONE) {
         setValue(subject, 0f)
         subject.visibility = VISIBLE
@@ -67,7 +67,7 @@ object DimensionViewProperties {
 
     override fun getAnimationData(subject: View): AnimationData = subject.getAnimationData(id)
 
-    override fun setUpOnAnimationCommitted(subject: View) {
+    override fun setUpOnAnimationQueued(subject: View) {
       if (subject.visibility == GONE) {
         setValue(subject, 0f)
         subject.visibility = VISIBLE

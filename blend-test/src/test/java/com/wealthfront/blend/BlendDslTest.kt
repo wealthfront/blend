@@ -332,7 +332,7 @@ class BlendDslTest {
       return animationDatas[subject] ?: AnimationData().also { animationDatas[subject] = it }
     }
 
-    override fun setUpOnAnimationCommitted(subject: TestObject) {
+    override fun setUpOnAnimationQueued(subject: TestObject) {
       addInterruptableEndActions(subject, {
         animationDatas.remove(subject)
       })

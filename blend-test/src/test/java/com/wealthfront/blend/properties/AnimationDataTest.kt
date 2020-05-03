@@ -35,8 +35,8 @@ class AnimationDataTest {
   fun getFutureValue_futureValue() {
     val firstAnimation = SinglePropertyAnimation(view, property, 10f)
     val latestAnimation = SinglePropertyAnimation(view, property, 20f)
-    animationData.addCommittedAnimation(firstAnimation)
-    animationData.addCommittedAnimation(latestAnimation)
+    animationData.addQueuedAnimation(firstAnimation)
+    animationData.addQueuedAnimation(latestAnimation)
     assertThat(animationData.futureValue).isWithin(0.01f).of(20f)
   }
 
@@ -44,9 +44,9 @@ class AnimationDataTest {
   fun getFutureValue_futureValue_animationEndedEarly() {
     val firstAnimation = SinglePropertyAnimation(view, property, 10f)
     val latestAnimation = SinglePropertyAnimation(view, property, 20f)
-    animationData.addCommittedAnimation(firstAnimation)
-    animationData.addCommittedAnimation(latestAnimation)
-    animationData.removeCommittedAnimation(latestAnimation)
+    animationData.addQueuedAnimation(firstAnimation)
+    animationData.addQueuedAnimation(latestAnimation)
+    animationData.removeQueuedAnimation(latestAnimation)
     assertThat(animationData.futureValue).isWithin(0.01f).of(20f)
   }
 
@@ -54,10 +54,10 @@ class AnimationDataTest {
   fun getFutureValue_futureValue_animationEndedEarly_clear() {
     val firstAnimation = SinglePropertyAnimation(view, property, 10f)
     val latestAnimation = SinglePropertyAnimation(view, property, 20f)
-    animationData.addCommittedAnimation(firstAnimation)
-    animationData.addCommittedAnimation(latestAnimation)
-    animationData.removeCommittedAnimation(latestAnimation)
-    animationData.removeCommittedAnimation(firstAnimation)
+    animationData.addQueuedAnimation(firstAnimation)
+    animationData.addQueuedAnimation(latestAnimation)
+    animationData.removeQueuedAnimation(latestAnimation)
+    animationData.removeQueuedAnimation(firstAnimation)
     assertThat(animationData.futureValue).isNull()
   }
 
@@ -66,12 +66,12 @@ class AnimationDataTest {
     val delayedAnimation = SinglePropertyAnimation(view, property, 10f)
       .apply {
         animator = unstartedAnimator
-        isPartOfAFullyCommittedSet = true
+        isPartOfAFullyQueuedSet = true
       }
     val newAnimation = SinglePropertyAnimation(view, property, 20f)
-    animationData.addCommittedAnimation(delayedAnimation)
-    animationData.addCommittedAnimation(newAnimation)
-    animationData.removeCommittedAnimation(newAnimation)
+    animationData.addQueuedAnimation(delayedAnimation)
+    animationData.addQueuedAnimation(newAnimation)
+    animationData.removeQueuedAnimation(newAnimation)
     assertThat(animationData.futureValue).isNull()
   }
 
@@ -80,12 +80,12 @@ class AnimationDataTest {
     val delayedAnimation = SinglePropertyAnimation(view, property, 10f)
         .apply {
           animator = unstartedAnimator
-          isPartOfAFullyCommittedSet = false
+          isPartOfAFullyQueuedSet = false
         }
     val newAnimation = SinglePropertyAnimation(view, property, 20f)
-    animationData.addCommittedAnimation(delayedAnimation)
-    animationData.addCommittedAnimation(newAnimation)
-    animationData.removeCommittedAnimation(newAnimation)
+    animationData.addQueuedAnimation(delayedAnimation)
+    animationData.addQueuedAnimation(newAnimation)
+    animationData.removeQueuedAnimation(newAnimation)
     assertThat(animationData.futureValue).isNotNull()
   }
 }

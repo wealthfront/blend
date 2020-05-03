@@ -32,24 +32,24 @@ class SinglePropertyAnimation<Subject>(
   var animator: BlendableAnimator? = null
     @VisibleForTesting internal set
   /**
-   * Whether this animation has started running. Note that it can be committed (i.e. queued) and not started.
+   * Whether this animation has started running. Note that it can be queued and not started.
    */
   val isStarted: Boolean get() = animator?.isStarted ?: false
   /**
-   * Whether the set that this animation belongs to is done committing all of its animations. Useful for figuring out
-   * when to cancel unstarted (but committed) animations.
+   * Whether the set that this animation belongs to is done queuing all of its animations. Useful for figuring out
+   * when to cancel unstarted (but queued) animations.
    */
-  var isPartOfAFullyCommittedSet: Boolean = false
+  var isPartOfAFullyQueuedSet: Boolean = false
 
   /**
-   * Set up the starting values for this animation and commit the [targetValue] as [property]'s future value.
+   * Set up the starting values for this animation and queue the [targetValue] as [property]'s future value.
    */
-  fun setUpOnAnimationCommitted(animator: BlendableAnimator) {
+  fun setUpOnAnimationQueued(animator: BlendableAnimator) {
     this.animator = animator
-    property.setUpOnAnimationCommitted(subject)
+    property.setUpOnAnimationQueued(subject)
     startValue = property.getFutureValue(subject)
     previousValue = startValue
-    property.addCommittedAnimation(subject, this)
+    property.addQueuedAnimation(subject, this)
     property.addInterruptableEndActions(subject, *interruptibleEndActions.toTypedArray())
   }
 
@@ -73,6 +73,6 @@ class SinglePropertyAnimation<Subject>(
    */
   fun runEndActions() {
     property.runEndActions(subject, this)
-    property.removeCommittedAnimation(subject, this)
+    property.removeQueuedAnimation(subject, this)
   }
 }
