@@ -4,8 +4,10 @@ import com.wealthfront.blend.animator.BlendableAnimator
 import com.wealthfront.blend.properties.AdditiveProperty
 
 @BuilderMarker
-interface AnimationBuilder<out Subject : Any> : ListenerBuilder {
-  val currentSubjects: List<Subject>
+open class AnimationBuilder<out Subject : Any>(
+  val currentSubjects: List<Subject>,
+  override val currentAnimator: BlendableAnimator
+) : ListenerBuilder {
 
   /**
    * A utility method to help subclasses easily add animations without needing to explicitly construct
@@ -16,27 +18,19 @@ interface AnimationBuilder<out Subject : Any> : ListenerBuilder {
    * @param targetValue The value to animate [property] to
    */
   fun <Subject : Any> addAnimation(
-    subject: Subject,
+    targetValue: Float,
     property: AdditiveProperty<Subject>,
-    targetValue: Float
+    subject: Subject
   ) {
     currentAnimator.addAnimation(subject, property, targetValue)
   }
-
-  /**
-   * Add an animation of [property] for all [currentSubjects].
-   *
-   * @param property The property to animate
-   * @param targetValue The value to animate [property] to
-   */
-  fun genericProperty(targetValue: Float, property: AdditiveProperty<Subject>) =
-      currentSubjects.forEach { subject -> addAnimation(subject, property, targetValue) }
 }
 
 /**
- * An [AnimationBuilder] for arbitrary object types.
+ * Add an animation of [property] for all [AnimationBuilder.currentSubjects].
+ *
+ * @param property The property to animate
+ * @param targetValue The value to animate [property] to
  */
-class GenericAnimationBuilder<out Subject : Any>(
-  override val currentSubjects: List<Subject>,
-  override val currentAnimator: BlendableAnimator
-) : AnimationBuilder<Subject>
+fun <Subject : Any> AnimationBuilder<Subject>.customProperty(targetValue: Float, property: AdditiveProperty<Subject>) =
+  currentSubjects.forEach { subject -> currentAnimator.addAnimation(subject, property, targetValue) }

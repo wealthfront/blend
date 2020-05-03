@@ -14,6 +14,7 @@ dependencies {
 
   implementation(Libs.mockitoCore)
   implementation(Libs.junit)
+  implementation(Libs.testCore)
   implementation(Libs.truth)
   implementation(Libs.robolectric) {
     exclude(group = "commons-logging", module = "commons-logging")

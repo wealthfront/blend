@@ -34,7 +34,15 @@ class AnimationDataTest {
   @Test
   fun getFutureValue_futureValue() {
     val firstAnimation = SinglePropertyAnimation(view, property, 10f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyCommittedSet = true
+      }
     val latestAnimation = SinglePropertyAnimation(view, property, 20f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyCommittedSet = true
+      }
     animationData.addCommittedAnimation(firstAnimation)
     animationData.addCommittedAnimation(latestAnimation)
     assertThat(animationData.futureValue).isWithin(0.01f).of(20f)
@@ -43,7 +51,15 @@ class AnimationDataTest {
   @Test
   fun getFutureValue_futureValue_animationEndedEarly() {
     val firstAnimation = SinglePropertyAnimation(view, property, 10f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyCommittedSet = true
+      }
     val latestAnimation = SinglePropertyAnimation(view, property, 20f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyCommittedSet = true
+      }
     animationData.addCommittedAnimation(firstAnimation)
     animationData.addCommittedAnimation(latestAnimation)
     animationData.removeCommittedAnimation(latestAnimation)
@@ -53,7 +69,15 @@ class AnimationDataTest {
   @Test
   fun getFutureValue_futureValue_animationEndedEarly_clear() {
     val firstAnimation = SinglePropertyAnimation(view, property, 10f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyCommittedSet = true
+      }
     val latestAnimation = SinglePropertyAnimation(view, property, 20f)
+      .apply {
+        animator = startedAnimator
+        isPartOfAFullyCommittedSet = true
+      }
     animationData.addCommittedAnimation(firstAnimation)
     animationData.addCommittedAnimation(latestAnimation)
     animationData.removeCommittedAnimation(latestAnimation)
@@ -86,6 +110,7 @@ class AnimationDataTest {
     animationData.addCommittedAnimation(delayedAnimation)
     animationData.addCommittedAnimation(newAnimation)
     animationData.removeCommittedAnimation(newAnimation)
+    delayedAnimation.animator = startedAnimator
     assertThat(animationData.futureValue).isNotNull()
   }
 }

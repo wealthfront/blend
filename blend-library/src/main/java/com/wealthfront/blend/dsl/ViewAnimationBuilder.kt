@@ -7,7 +7,6 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat.getColor
-import com.wealthfront.blend.animator.BlendableAnimator
 import com.wealthfront.blend.builder.HoldHeightConstantAction
 import com.wealthfront.blend.builder.SetPropertyValueAction
 import com.wealthfront.blend.builder.SetVisibilityAction
@@ -43,306 +42,247 @@ import com.wealthfront.ktx.wrapContentHeight
 import com.wealthfront.ktx.wrapContentWidth
 
 /**
- * An [AnimationBuilder] for [View]s and their subclasses.
+ * Add a width animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
  */
-open class ViewAnimationBuilder<Subject : View>(
-  override val currentSubjects: List<Subject>,
-  override var currentAnimator: BlendableAnimator
-) : AnimationBuilder<Subject> {
-
-  /**
-   * Add a width animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun width(targetValue: Int) = currentSubjects.forEach { currentView ->
-    when (targetValue) {
-      WRAP_CONTENT -> {
-        addAnimation(currentView, WIDTH, currentView.wrapContentWidth.toFloat())
-        doOnFinishedUnlessLastAnimationInterrupted(
-            SetPropertyValueAction(currentView, WIDTH, WRAP_CONTENT.toFloat()))
-      }
-      MATCH_PARENT -> {
-        addAnimation(currentView, WIDTH, currentView.matchParentWidth.toFloat())
-        doOnFinishedUnlessLastAnimationInterrupted(
-            SetPropertyValueAction(currentView, WIDTH, MATCH_PARENT.toFloat()))
-      }
-      else -> {
-        addAnimation(currentView, WIDTH, targetValue.toFloat())
-      }
+fun AnimationBuilder<View>.width(targetValue: Int) = currentSubjects.forEach { currentView ->
+  when (targetValue) {
+    WRAP_CONTENT -> {
+      addAnimation(currentView.wrapContentWidth.toFloat(), WIDTH, currentView)
+      doOnFinishedUnlessLastAnimationInterrupted(
+          SetPropertyValueAction(currentView, WIDTH, WRAP_CONTENT.toFloat()))
+    }
+    MATCH_PARENT -> {
+      addAnimation(currentView.matchParentWidth.toFloat(), WIDTH, currentView)
+      doOnFinishedUnlessLastAnimationInterrupted(
+          SetPropertyValueAction(currentView, WIDTH, MATCH_PARENT.toFloat()))
+    }
+    else -> {
+      addAnimation(targetValue.toFloat(), WIDTH, currentView)
     }
   }
+}
 
-  /**
-   * Add a height animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun height(targetValue: Int) = currentSubjects.forEach { currentView ->
-    when (targetValue) {
-      WRAP_CONTENT -> {
-        addAnimation(currentView, HEIGHT, currentView.wrapContentHeight.toFloat())
-        doOnFinishedUnlessLastAnimationInterrupted(
-            SetPropertyValueAction(currentView, HEIGHT, WRAP_CONTENT.toFloat()))
-      }
-      MATCH_PARENT -> {
-        addAnimation(currentView, HEIGHT, currentView.matchParentHeight.toFloat())
-        doOnFinishedUnlessLastAnimationInterrupted(
-            SetPropertyValueAction(currentView, HEIGHT, MATCH_PARENT.toFloat()))
-      }
-      else -> {
-        addAnimation(currentView, HEIGHT, targetValue.toFloat())
-      }
+/**
+ * Add a height animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.height(targetValue: Int) = currentSubjects.forEach { currentView ->
+  when (targetValue) {
+    WRAP_CONTENT -> {
+      addAnimation(currentView.wrapContentHeight.toFloat(), HEIGHT, currentView)
+      doOnFinishedUnlessLastAnimationInterrupted(
+          SetPropertyValueAction(currentView, HEIGHT, WRAP_CONTENT.toFloat()))
+    }
+    MATCH_PARENT -> {
+      addAnimation(currentView.matchParentHeight.toFloat(), HEIGHT, currentView)
+      doOnFinishedUnlessLastAnimationInterrupted(
+          SetPropertyValueAction(currentView, HEIGHT, MATCH_PARENT.toFloat()))
+    }
+    else -> {
+      addAnimation(targetValue.toFloat(), HEIGHT, currentView)
     }
   }
+}
 
-  /**
-   * Add a height animation for all [currentSubjects] with a final value of [WRAP_CONTENT].
-   */
-  fun expand() = height(WRAP_CONTENT)
+/**
+ * Add a height animation for all [AnimationBuilder.currentSubjects] with a final value of [WRAP_CONTENT].
+ */
+fun AnimationBuilder<View>.expand() = height(WRAP_CONTENT)
 
-  /**
-   * Add a height animation for all [currentSubjects] with a final value of `0`.
-   */
-  fun collapse() = height(0)
+/**
+ * Add a height animation for all [AnimationBuilder.currentSubjects] with a final value of `0`.
+ */
+fun AnimationBuilder<View>.collapse() = height(0)
 
-  /**
-   * Add an animation for any height change that happens in [idempotentAction], e.g. adding or removing child views.
-   *
-   * This method will run [idempotentAction] at least once, and potentially multiple times.
-   */
-  fun expandAfter(idempotentAction: () -> Unit) = apply {
-    currentSubjects.forEach { view ->
-      currentAnimator.doBeforeStart(HoldHeightConstantAction(view, idempotentAction))
-    }
-    height(WRAP_CONTENT)
+/**
+ * Add an animation for any height change that happens in [idempotentAction], e.g. adding or removing child views.
+ *
+ * This method will run [idempotentAction] at least once, and potentially multiple times.
+ */
+fun AnimationBuilder<View>.expandAfter(idempotentAction: () -> Unit) {
+  currentSubjects.forEach { view ->
+    currentAnimator.doBeforeStart(HoldHeightConstantAction(view, idempotentAction))
   }
+  height(WRAP_CONTENT)
+}
 
-  /**
-   * Add an alpha animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun alpha(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, ALPHA, targetValue)
-    if (targetValue == 0f) {
-      currentAnimator.doOnFinishedUnlessLastAnimationInterrupted(
-          SetVisibilityAction(
-              currentView,
-              INVISIBLE))
-    }
+/**
+ * Add an alpha animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.alpha(targetValue: Float) = currentSubjects.forEach { currentView ->
+  addAnimation(targetValue, ALPHA, currentView)
+  if (targetValue == 0f) {
+    currentAnimator.doOnFinishedUnlessLastAnimationInterrupted(SetVisibilityAction(currentView, INVISIBLE))
   }
+}
 
-  /**
-   * Add an alpha animation for all [currentSubjects] with a final value of 0, or fully transparent.
-   */
-  fun fadeOut() = alpha(0f)
+/**
+ * Add an alpha animation for all [AnimationBuilder.currentSubjects] with a final value of 0, or fully transparent.
+ */
+fun AnimationBuilder<View>.fadeOut() = alpha(0f)
 
-  /**
-   * Add an alpha animation for all [currentSubjects] with a final value of 1, or fully opaque.
-   */
-  fun fadeIn() = alpha(1f)
+/**
+ * Add an alpha animation for all [AnimationBuilder.currentSubjects] with a final value of 1, or fully opaque.
+ */
+fun AnimationBuilder<View>.fadeIn() = alpha(1f)
 
-  /**
-   * Add an animation to fade all [currentSubjects] in and all [others] out simultaneously.
-   */
-  fun crossfadeWith(vararg others: View) {
-    fadeOut()
-    target(others.toList()) { fadeIn() }
-  }
+/**
+ * Add an animation to fade all [AnimationBuilder.currentSubjects] in and all [others] out simultaneously.
+ */
+fun AnimationBuilder<View>.crossfadeWith(vararg others: View) {
+  fadeOut()
+  target(others.toList()) { fadeIn() }
+}
 
-  /**
-   * Add a translationX animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun translationX(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, TRANSLATION_X, targetValue)
-  }
+/**
+ * Add a translationX animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.translationX(targetValue: Float) = customProperty(targetValue, TRANSLATION_X)
 
-  /**
-   * Add a translationY animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun translationY(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, TRANSLATION_Y, targetValue)
-  }
+/**
+ * Add a translationY animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.translationY(targetValue: Float) = customProperty(targetValue, TRANSLATION_Y)
 
-  /**
-   * Add a translationZ animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun translationZ(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, TRANSLATION_Z, targetValue)
-  }
+/**
+ * Add a translationZ animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.translationZ(targetValue: Float) = customProperty(targetValue, TRANSLATION_Z)
 
-  /**
-   * Add an x animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun x(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, X, targetValue)
-  }
+/**
+ * Add an x animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.x(targetValue: Float) = customProperty(targetValue, X)
 
-  /**
-   * Add a y animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun y(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, Y, targetValue)
-  }
+/**
+ * Add a y animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.y(targetValue: Float) = customProperty(targetValue, Y)
 
-  /**
-   * Add a z animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun z(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, Z, targetValue)
-  }
+/**
+ * Add a z animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.z(targetValue: Float) = customProperty(targetValue, Z)
 
-  /**
-   * Add a rotation animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun rotation(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, ROTATION, targetValue)
-  }
+/**
+ * Add a rotation animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.rotation(targetValue: Float) = customProperty(targetValue, ROTATION)
 
-  /**
-   * Add a rotationX animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun rotationX(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, ROTATION_X, targetValue)
-  }
+/**
+ * Add a rotationX animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.rotationX(targetValue: Float) = customProperty(targetValue, ROTATION_X)
 
-  /**
-   * Add a rotationY animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun rotationY(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, ROTATION_Y, targetValue)
-  }
+/**
+ * Add a rotationY animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.rotationY(targetValue: Float) = customProperty(targetValue, ROTATION_Y)
 
-  /**
-   * Add a scaleX and a scaleY animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun scale(targetValue: Float) = apply {
-    scaleX(targetValue)
-    scaleY(targetValue)
-  }
+/**
+ * Add a scaleX and a scaleY animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.scale(targetValue: Float) {
+  scaleX(targetValue)
+  scaleY(targetValue)
+}
 
-  /**
-   * Add a scaleX animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun scaleX(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, SCALE_X, targetValue)
-  }
+/**
+ * Add a scaleX animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.scaleX(targetValue: Float) = customProperty(targetValue, SCALE_X)
 
-  /**
-   * Add a scaleY animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun scaleY(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, SCALE_Y, targetValue)
-  }
+/**
+ * Add a scaleY animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.scaleY(targetValue: Float) = customProperty(targetValue, SCALE_Y)
 
-  /**
-   * Add an elevation animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun elevation(targetValue: Float) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, ELEVATION, targetValue)
-  }
+/**
+ * Add an elevation animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.elevation(targetValue: Float) = customProperty(targetValue, ELEVATION)
 
-  /**
-   * Add an animation for padding on all sides for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun padding(targetValue: Int) = apply {
-    paddingLeft(targetValue)
-    paddingRight(targetValue)
-    paddingTop(targetValue)
-    paddingBottom(targetValue)
-  }
+/**
+ * Add an animation for padding on all sides for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.padding(targetValue: Int) {
+  paddingLeft(targetValue)
+  paddingRight(targetValue)
+  paddingTop(targetValue)
+  paddingBottom(targetValue)
+}
 
-  /**
-   * Add a paddingLeft animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun paddingLeft(targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, PADDING_LEFT, targetValue.toFloat())
-  }
+/**
+ * Add a paddingLeft animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.paddingLeft(targetValue: Int) = customProperty(targetValue.toFloat(), PADDING_LEFT)
 
-  /**
-   * Add a paddingRight animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun paddingRight(targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, PADDING_RIGHT, targetValue.toFloat())
-  }
+/**
+ * Add a paddingRight animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.paddingRight(targetValue: Int) = customProperty(targetValue.toFloat(), PADDING_RIGHT)
 
-  /**
-   * Add a paddingTop animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun paddingTop(targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, PADDING_TOP, targetValue.toFloat())
-  }
+/**
+ * Add a paddingTop animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.paddingTop(targetValue: Int) = customProperty(targetValue.toFloat(), PADDING_TOP)
 
-  /**
-   * Add a paddingBottom animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun paddingBottom(targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, PADDING_BOTTOM, targetValue.toFloat())
-  }
+/**
+ * Add a paddingBottom animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.paddingBottom(targetValue: Int) = customProperty(targetValue.toFloat(), PADDING_BOTTOM)
 
-  /**
-   * Add an animation for margins on all sides for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun margin(targetValue: Int) = apply {
-    marginLeft(targetValue)
-    marginRight(targetValue)
-    marginTop(targetValue)
-    marginBottom(targetValue)
-  }
+/**
+ * Add an animation for margins on all sides for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.margin(targetValue: Int) {
+  marginLeft(targetValue)
+  marginRight(targetValue)
+  marginTop(targetValue)
+  marginBottom(targetValue)
+}
 
-  /**
-   * Add a marginLeft animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun marginLeft(targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, MARGIN_LEFT, targetValue.toFloat())
-  }
+/**
+ * Add a marginLeft animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.marginLeft(targetValue: Int) = customProperty(targetValue.toFloat(), MARGIN_LEFT)
 
-  /**
-   * Add a marginRight animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun marginRight(targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, MARGIN_RIGHT, targetValue.toFloat())
-  }
+/**
+ * Add a marginRight animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.marginRight(targetValue: Int) = customProperty(targetValue.toFloat(), MARGIN_RIGHT)
 
-  /**
-   * Add a marginTop animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun marginTop(targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, MARGIN_TOP, targetValue.toFloat())
-  }
+/**
+ * Add a marginTop animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.marginTop(targetValue: Int) = customProperty(targetValue.toFloat(), MARGIN_TOP)
 
-  /**
-   * Add a marginBottom animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun marginBottom(targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, MARGIN_BOTTOM, targetValue.toFloat())
-  }
+/**
+ * Add a marginBottom animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.marginBottom(targetValue: Int) = customProperty(targetValue.toFloat(), MARGIN_BOTTOM)
 
-  /**
-   * Add a backgroundColor animation for all [currentSubjects] with a final value of the color resolved by
-   * [targetValueRes].
-   */
-  fun backgroundColor(@ColorRes targetValueRes: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, BACKGROUND_COLOR, getColor(currentView.context, targetValueRes).toFloat())
-  }
+/**
+ * Add a backgroundColor animation for all [AnimationBuilder.currentSubjects] with a final value of the color resolved by
+ * [targetValueRes].
+ */
+fun AnimationBuilder<View>.backgroundColor(@ColorRes targetValueRes: Int) =
+  customProperty(getColor(currentSubjects[0].context, targetValueRes).toFloat(), BACKGROUND_COLOR)
 
-  /**
-   * Add a backgroundColor animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun backgroundColorValue(@ColorInt targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, BACKGROUND_COLOR, targetValue.toFloat())
-  }
+/**
+ * Add a backgroundColor animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.backgroundColorValue(@ColorInt targetValue: Int) = customProperty(targetValue.toFloat(), BACKGROUND_COLOR)
 
-  /**
-   * Add a scrollY animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun scrollY(targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, SCROLL_Y, targetValue.toFloat())
-  }
+/**
+ * Add a scrollY animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.scrollY(targetValue: Int) = customProperty(targetValue.toFloat(), SCROLL_Y)
 
-  /**
-   * Add a scrollX animation for all [currentSubjects] with a final value of [targetValue].
-   */
-  fun scrollX(targetValue: Int) = currentSubjects.forEach { currentView ->
-    addAnimation(currentView, SCROLL_X, targetValue.toFloat())
-  }
+/**
+ * Add a scrollX animation for all [AnimationBuilder.currentSubjects] with a final value of [targetValue].
+ */
+fun AnimationBuilder<View>.scrollX(targetValue: Int) = customProperty(targetValue.toFloat(), SCROLL_X)
 
-  private fun <T : View> target(views: List<T>, action: ViewAnimationBuilder<T>.() -> Unit) {
-    ViewAnimationBuilder(views, currentAnimator).action()
-  }
+private fun <T : View> AnimationBuilder<T>.target(views: List<T>, action: AnimationBuilder<T>.() -> Unit) {
+  AnimationBuilder(views, currentAnimator).action()
 }

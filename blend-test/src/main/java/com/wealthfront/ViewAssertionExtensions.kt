@@ -7,6 +7,9 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import kotlin.math.absoluteValue
 
+internal const val ALPHA_FULL = 1f
+internal const val ALPHA_TRANSPARENT = 0f
+
 internal val View.isCollapsed: Boolean get() {
   return visibility == GONE || layoutParams.height == 0
 }
@@ -16,7 +19,7 @@ internal val View.isExpanded: Boolean get() {
 }
 
 internal val View.isFadedIn: Boolean get() {
-  return visibility == VISIBLE && alpha.isCloseEnoughTo(1f)
+  return visibility == VISIBLE && alpha.isCloseEnoughTo(ALPHA_FULL)
 }
 
 internal val View.isFadedOut: Boolean get() {
