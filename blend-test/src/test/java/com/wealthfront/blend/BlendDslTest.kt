@@ -13,25 +13,23 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat.getColor
 import com.google.common.truth.Truth.assertThat
-import com.wealthfront.blend.test.R
 import com.wealthfront.ViewAssertions.assertThatView
+import com.wealthfront.application
 import com.wealthfront.blend.animator.BlendableAnimator
 import com.wealthfront.blend.mock.ImmediateBlend
 import com.wealthfront.blend.properties.AdditiveProperty
 import com.wealthfront.blend.properties.AnimationData
+import com.wealthfront.blend.test.R
 import com.wealthfront.ktx.matchParentHeight
 import com.wealthfront.ktx.wrapContentHeight
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment.application
-import org.robolectric.annotation.Config
 
 // Tests requiring animation listeners use an `Instant` subclass of Blend to avoid the robolectric issue
 // described here: https://github.com/robolectric/robolectric/issues/2930
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class BlendDslTest {
 
   val blend: Blend = Blend()
@@ -332,7 +330,7 @@ class BlendDslTest {
       return animationDatas[subject] ?: AnimationData().also { animationDatas[subject] = it }
     }
 
-    override fun setUpOnAnimationStart(subject: TestObject) {
+    override fun setUpOnAnimationQueued(subject: TestObject) {
       addInterruptableEndActions(subject, {
         animationDatas.remove(subject)
       })

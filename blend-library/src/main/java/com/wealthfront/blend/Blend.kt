@@ -83,7 +83,7 @@ open class Blend {
    */
   open fun stopPulsing(vararg views: View) {
     views
-        .flatMap { view -> AdditiveViewProperties.ALPHA.getAnimationData(view).runningAnimations }
+        .flatMap { view -> AdditiveViewProperties.ALPHA.getAnimationData(view).queuedAnimations }
         .mapNotNull { singlePropertyAnimation -> singlePropertyAnimation.animator }
         .filter { animator -> animator.repeatCount != 0 }
         .toSet()

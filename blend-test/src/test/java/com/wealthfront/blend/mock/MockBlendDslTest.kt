@@ -3,7 +3,6 @@ package com.wealthfront.blend.mock
 import android.view.View
 import android.view.ViewGroup
 import com.google.common.truth.Truth.assertThat
-import com.wealthfront.blend.BuildConfig
 import com.wealthfront.blend.builder.SetPropertyValueAction
 import com.wealthfront.blend.properties.AdditiveViewProperties.ALPHA
 import com.wealthfront.blend.properties.AdditiveViewProperties.TRANSLATION_X
@@ -14,10 +13,8 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations.initMocks
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class MockBlendDslTest {
 
   lateinit var blend: MockBlend
