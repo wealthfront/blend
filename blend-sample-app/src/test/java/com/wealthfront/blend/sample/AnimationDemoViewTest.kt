@@ -4,7 +4,6 @@ import com.google.common.truth.Truth.assertThat
 import com.wealthfront.blend.mock.ImmediateBlend
 import com.wealthfront.blend.mock.MockBlend
 import com.wealthfront.blend.properties.AdditiveViewProperties.Y
-import com.wealthfront.blend.sample.ThemedApplicationProvider.application
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -44,7 +44,7 @@ fun <Subject : Any> makeExternalAdditiveViewProperty(
           interpolateAction(startValue, endValue, timeFraction, subject)
         }
 
-    override fun setUpOnAnimationStart(subject: Subject) {
+    override fun setUpOnAnimationQueued(subject: Subject) {
       setUpAction?.invoke(subject)
     }
   }
@@ -78,21 +78,19 @@ private fun MutableMap<Any, AnimationData>.getOrCreate(key: Any): AnimationData 
  * @param interpolateAction The action to interpolate values (if not linear, e.g. for color properties)
  * @param setUpAction The action to run when any animation for this property starts, if needed
  */
-internal fun <Subject : View> makeAdditiveViewProperty(
+fun <Subject : View> makeAdditiveViewProperty(
   @IdRes id: Int,
   get: (subject: Subject) -> Float,
   set: (subject: Subject, value: Float) -> Unit,
   interpolateAction: ((startValue: Float, endValue: Float, timeFraction: Float, subject: Subject) -> Float)? = null,
   setUpAction: ((subject: Subject) -> Unit)? = null
-): AdditiveProperty<Subject> {
-  return object : AdditiveProperty<Subject> {
+): AdditiveViewProperty<Subject> {
+  return object : AdditiveViewProperty<Subject> {
     override val id: Int = id
 
     override fun setValue(subject: Subject, value: Float) = set(subject, value)
 
     override fun getCurrentValue(subject: Subject): Float = get(subject)
-
-    override fun getAnimationData(subject: Subject): AnimationData = subject.getAnimationData(id)
 
     override fun interpolate(startValue: Float, endValue: Float, timeFraction: Float, subject: Subject): Float =
       if (interpolateAction == null) {
@@ -101,7 +99,7 @@ internal fun <Subject : View> makeAdditiveViewProperty(
         interpolateAction(startValue, endValue, timeFraction, subject)
       }
 
-    override fun setUpOnAnimationStart(subject: Subject) {
+    override fun setUpOnAnimationQueued(subject: Subject) {
       setUpAction?.invoke(subject)
     }
   }
@@ -115,7 +113,7 @@ internal fun <Subject : View> makeAdditiveViewProperty(
  * @param set The setter function
  * @param setUpAction The action to run when any animation for this property starts, if needed
  */
-internal fun <Subject : View> makeAdditiveIntViewProperty(
+fun <Subject : View> makeAdditiveIntViewProperty(
   @IdRes id: Int,
   get: (subject: Subject) -> Float,
   set: (subject: Subject, value: Float) -> Unit,
@@ -159,7 +157,7 @@ internal fun wrapViewProperty(
 
     override fun getAnimationData(subject: View): AnimationData = subject.getAnimationData(id)
 
-    override fun setUpOnAnimationStart(subject: View) {
+    override fun setUpOnAnimationQueued(subject: View) {
       setUpAction?.invoke(subject)
     }
   }

@@ -35,9 +35,9 @@ interface AnimationStarter {
     return animatorSet.asAnimator().apply {
       addListener(object : AnimatorListenerAdapter() {
         override fun onAnimationStart(animation: Animator?) {
-          animatorSet.childAnimators
-            .mapNotNull { it as? BlendableAnimator }
-            .forEach { it.commitFutureValuesIfNotCommitted() }
+          val animators = animatorSet.childAnimators.mapNotNull { it as? BlendableAnimator }
+          animators.forEach { it.queueAnimationsIfNotAlreadyQueued() }
+          animators.forEach { it.markAnimationsAsFullyQueued() }
         }
       })
     }

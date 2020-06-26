@@ -9,15 +9,11 @@ import com.wealthfront.blend.animator.BlendableAnimator
 import com.wealthfront.blend.builder.AnimatorSetWrapper
 import com.wealthfront.blend.dsl.AnimatorBuilder
 import com.wealthfront.blend.dsl.AnimatorSetBuilder
+import com.wealthfront.blend.dsl.alpha
+import com.wealthfront.blend.dsl.fadeIn
+import com.wealthfront.blend.dsl.fadeOut
 import com.wealthfront.blend.properties.AdditiveViewProperties
 import javax.annotation.CheckReturnValue
-
-const val ALPHA_FULL = 1f
-const val ALPHA_TRANSPARENT = 0f
-const val ANIM_DURATION_DEFAULT_MS = 300L
-const val ANIM_DURATION_LONG_MS = 500L
-const val ANIM_DURATION_SHORT_MS = 200L
-const val ANIM_STAGGER_DEFAULT_MS = 50L
 
 /**
  * The entry point into the Blend DSL.
@@ -27,6 +23,13 @@ const val ANIM_STAGGER_DEFAULT_MS = 50L
  */
 @CheckReturnValue
 open class Blend {
+
+  companion object {
+    const val ANIM_DURATION_DEFAULT_MS = 300L
+    const val ANIM_DURATION_LONG_MS = 500L
+    const val ANIM_DURATION_SHORT_MS = 200L
+    const val ANIM_STAGGER_DEFAULT_MS = 50L
+  }
 
   /**
    * The entry point to creating an animation.
@@ -83,13 +86,13 @@ open class Blend {
    */
   open fun stopPulsing(vararg views: View) {
     views
-        .flatMap { view -> AdditiveViewProperties.ALPHA.getAnimationData(view).runningAnimations }
+        .flatMap { view -> AdditiveViewProperties.ALPHA.getAnimationData(view).queuedAnimations }
         .mapNotNull { singlePropertyAnimation -> singlePropertyAnimation.animator }
         .filter { animator -> animator.repeatCount != 0 }
         .toSet()
         .forEach { animator -> animator.cancel() }
     this {
-      target(*views).animations { alpha(ALPHA_FULL) }
+      target(*views).animations { fadeIn() }
     }.start()
   }
 

@@ -1,5 +1,6 @@
 package com.wealthfront.blend.animator
 
+import androidx.annotation.VisibleForTesting
 import com.wealthfront.blend.properties.AdditiveProperty
 
 /**
@@ -29,17 +30,26 @@ class SinglePropertyAnimation<Subject>(
    * The animator running this animation
    */
   var animator: BlendableAnimator? = null
-    private set
+    @VisibleForTesting internal set
+  /**
+   * Whether this animation has started running. Note that it can be queued and not started.
+   */
+  val isStarted: Boolean get() = animator?.isStarted ?: false
+  /**
+   * Whether the set that this animation belongs to is done queuing all of its animations. Useful for figuring out
+   * when to cancel unstarted (but queued) animations.
+   */
+  var isPartOfAFullyQueuedSet: Boolean = false
 
   /**
-   * Set up the starting values for this animation and commit the [targetValue] as [property]'s future value.
+   * Set up the starting values for this animation and queue the [targetValue] as [property]'s future value.
    */
-  fun setUpOnAnimationStart(animator: BlendableAnimator) {
+  fun setUpOnAnimationQueued(animator: BlendableAnimator) {
     this.animator = animator
-    property.setUpOnAnimationStart(subject)
+    property.setUpOnAnimationQueued(subject)
     startValue = property.getFutureValue(subject)
     previousValue = startValue
-    property.addRunningAnimation(subject, this)
+    property.addQueuedAnimation(subject, this)
     property.addInterruptableEndActions(subject, *interruptibleEndActions.toTypedArray())
   }
 
@@ -52,12 +62,17 @@ class SinglePropertyAnimation<Subject>(
     previousValue = newValue
   }
 
+  fun markCancelled() {
+    startValue = targetValue
+    previousValue = targetValue
+  }
+
   /**
    * Run the end actions added by [BlendableAnimator.doOnFinishedUnlessLastAnimationInterrupted], if we haven't been
    * interrupted by another animation on [subject].[property].
    */
   fun runEndActions() {
     property.runEndActions(subject, this)
-    property.removeRunningAnimator(subject, this)
+    property.removeQueuedAnimation(subject, this)
   }
 }

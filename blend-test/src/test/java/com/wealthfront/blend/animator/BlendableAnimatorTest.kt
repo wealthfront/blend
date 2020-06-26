@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import com.google.common.truth.Truth.assertThat
 import com.wealthfront.any
-import com.wealthfront.blend.BuildConfig
 import com.wealthfront.blend.properties.AdditiveProperty
-import com.wealthfront.blend.properties.AnimationData
 import com.wealthfront.blend.properties.AdditiveViewProperties.ALPHA
 import com.wealthfront.blend.properties.AdditiveViewProperties.ELEVATION
 import com.wealthfront.blend.properties.AdditiveViewProperties.HEIGHT
@@ -32,6 +30,7 @@ import com.wealthfront.blend.properties.AdditiveViewProperties.WIDTH
 import com.wealthfront.blend.properties.AdditiveViewProperties.X
 import com.wealthfront.blend.properties.AdditiveViewProperties.Y
 import com.wealthfront.blend.properties.AdditiveViewProperties.Z
+import com.wealthfront.blend.properties.AnimationData
 import com.wealthfront.eq
 import com.wealthfront.whenever
 import org.junit.Before
@@ -44,10 +43,8 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations.initMocks
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class BlendableAnimatorTest {
 
   lateinit var blendableAnimator: BlendableAnimator
@@ -129,7 +126,7 @@ class BlendableAnimatorTest {
   }
 
   @Test
-  fun animateValue_multipleAnimators_respectFutureAnimations() {
+  fun animateValue_multipleAnimators_respectStartedAnimations() {
     setUpTag(subject, X)
     blendableAnimator.addAnimation(SinglePropertyAnimation(
         subject = subject,
@@ -144,8 +141,9 @@ class BlendableAnimatorTest {
     ))
     secondBlendableAnimator.interpolator = LinearInterpolator()
     whenever(X.getCurrentValue(subject)).thenReturn(0f)
+    whenever(valueAnimator.isStarted).thenReturn(true)
 
-    blendableAnimator.commitFutureValuesIfNotCommitted()
+    blendableAnimator.start()
     secondBlendableAnimator.start()
 
     verify(secondValueAnimator).addUpdateListener(animatorUpdateListenerCaptor.capture())

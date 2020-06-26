@@ -21,7 +21,7 @@ import java.util.ArrayList
  * It wraps a [ValueAnimator] ([innerAnimator]) and delegates all [Animator] methods to it, with some redirection to
  * ensure proper adherence to e.g. listener contracts.
  *
- * For proper functioning in sets, you must call [commitFutureValuesIfNotCommitted] when the set of animations is
+ * For proper functioning in sets, you must call [queueAnimationsIfNotAlreadyQueued] when the set of animations is
  * started, even if this animation is delayed. If not, the end state of the set of animations becomes dependent on
  * when the individual animators start, which can be unpredictable when they're user-initiated.
  */
@@ -43,7 +43,7 @@ open class BlendableAnimator : Animator() {
    * The actions to run before this animator starts.
    */
   @VisibleForTesting val beforeStartActions: MutableList<() -> Unit> = mutableListOf()
-  private var valuesCommitted = false
+  private var animationsQueued = false
 
   val allAnimations: List<SinglePropertyAnimation<*>> get() = animations.toList()
 
@@ -96,17 +96,27 @@ open class BlendableAnimator : Animator() {
   }
 
   /**
-   * Commit the future values of all [animations] to the [com.wealthfront.blend.properties.AnimationData] objects
-   * described by their properties.
+   * Queue [animations], adding their future values to the [com.wealthfront.blend.properties.AnimationData] associated
+   * with each property/subject pair.
    *
-   * These future values are necessary for any animations started after this animator to blend properly.
+   * This should be called when the animation set that contains this animator is started, so animations started after
+   * this one can properly blend with this one.
    */
-  open fun commitFutureValuesIfNotCommitted() {
-    if (!valuesCommitted) {
+  open fun queueAnimationsIfNotAlreadyQueued() {
+    if (!animationsQueued) {
       beforeStartActions.forEach { it() }
-      animations.forEach { it.setUpOnAnimationStart(this) }
+      animations.forEach { it.setUpOnAnimationQueued(this) }
     }
-    valuesCommitted = true
+    animationsQueued = true
+  }
+
+  /**
+   * Mark all [animations] as part of a fully-queued set of animations.
+   *
+   * This step is necessary for individual animations in a set to not remove each other when being queued.
+   */
+  open fun markAnimationsAsFullyQueued() {
+    animations.forEach { it.isPartOfAFullyQueuedSet = true }
   }
 
   override fun start() {
@@ -120,16 +130,16 @@ open class BlendableAnimator : Animator() {
     innerAnimator.addListener(object : AnimatorListenerAdapter() {
       override fun onAnimationEnd(animation: Animator?) {
         animations.forEach { it.runEndActions() }
-        valuesCommitted = false
+        animationsQueued = false
       }
     })
 
-    commitFutureValuesIfNotCommitted()
     if (repeatCount > 0) {
       cancelAnimatorOnViewsDetached()
     }
+    queueAnimationsIfNotAlreadyQueued()
     innerAnimator.start()
-    super.start()
+    markAnimationsAsFullyQueued()
   }
 
   private fun cancelAnimatorOnViewsDetached() {

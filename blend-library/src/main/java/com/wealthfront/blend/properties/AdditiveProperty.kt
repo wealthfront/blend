@@ -1,5 +1,6 @@
 package com.wealthfront.blend.properties
 
+import android.view.View
 import androidx.annotation.IdRes
 import com.wealthfront.blend.animator.SinglePropertyAnimation
 import kotlin.math.roundToInt
@@ -10,8 +11,8 @@ import kotlin.math.roundToInt
  * To properly blend animations, it includes methods like [getFutureValue], [addInterruptableEndActions], and
  * [getAnimationData].
  *
- * We store data on running animations ([AnimationData]) on each subject, ideally. This systematically prevents leaks of
- * references to [Subject]s. The mechanism for storing is described by the implementation of [getAnimationData]
+ * We store data on queued animations ([AnimationData]) on each subject, ideally. This systematically prevents leaks
+ * of references to [Subject]s. The mechanism for storing is described by the implementation of [getAnimationData]
  */
 interface AdditiveProperty<in Subject> {
 
@@ -52,19 +53,19 @@ interface AdditiveProperty<in Subject> {
   /**
    * Perform any setup tasks when an animation on this property starts.
    */
-  fun setUpOnAnimationStart(subject: Subject) { }
+  fun setUpOnAnimationQueued(subject: Subject) { }
 
   /**
-   * Add a running animation to the [subject]'s [AnimationData] for this property.
+   * Add a queued animation to the [subject]'s [AnimationData] for this property.
    */
-  fun addRunningAnimation(subject: Subject, animation: SinglePropertyAnimation<*>) =
-      getAnimationData(subject).addRunningAnimation(animation)
+  fun addQueuedAnimation(subject: Subject, animation: SinglePropertyAnimation<*>) =
+      getAnimationData(subject).addQueuedAnimation(animation)
 
   /**
-   * Remove a running animation to the [subject]'s [AnimationData] for this property.
+   * Remove a queued animation from the [subject]'s [AnimationData] for this property.
    */
-  fun removeRunningAnimator(subject: Subject, animation: SinglePropertyAnimation<*>) =
-    getAnimationData(subject).removeRunningAnimation(animation)
+  fun removeQueuedAnimation(subject: Subject, animation: SinglePropertyAnimation<*>) =
+      getAnimationData(subject).removeQueuedAnimation(animation)
 
   /**
    * Add [endActions] to the [subject]'s [AnimationData] for this property so they can be cancelled if another
@@ -79,7 +80,7 @@ interface AdditiveProperty<in Subject> {
    */
   fun runEndActions(subject: Subject, animation: SinglePropertyAnimation<*>) {
     val animationData = getAnimationData(subject)
-    if (animation == animationData.runningAnimations.lastOrNull()) {
+    if (animation == animationData.queuedAnimations.lastOrNull()) {
       animationData.interruptableEndActions.forEach { it() }
       animationData.interruptableEndActions.clear()
     }
@@ -103,4 +104,12 @@ interface AdditiveIntProperty<in Subject> : AdditiveProperty<Subject> {
       timeFraction)
       .toFloat()
   }
+}
+
+/**
+ * An [AdditiveProperty] specifically designed for views. Handles storing running animations for you.
+ */
+interface AdditiveViewProperty<in Subject : View> : AdditiveProperty<Subject> {
+
+  override fun getAnimationData(subject: Subject): AnimationData = subject.getAnimationData(id)
 }
