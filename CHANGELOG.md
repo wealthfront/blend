@@ -4,6 +4,7 @@
 * Create testing library
 * Create sample app
 * Fix improper blending of delayed animations
+* Update api to be more flexible and extensible using extension functions
 
 ## v0.1.0
 * Initial release
