@@ -3,8 +3,8 @@ package com.wealthfront.blend.mock
 import android.view.View
 import com.google.common.truth.Truth.assertThat
 import com.wealthfront.application
-import com.wealthfront.blend.ALPHA_FULL
-import com.wealthfront.blend.ALPHA_TRANSPARENT
+import com.wealthfront.ALPHA_FULL
+import com.wealthfront.ALPHA_TRANSPARENT
 import com.wealthfront.blend.animator.BlendableAnimator
 import com.wealthfront.blend.animator.SinglePropertyAnimation
 import com.wealthfront.blend.properties.AdditiveViewProperties.ALPHA

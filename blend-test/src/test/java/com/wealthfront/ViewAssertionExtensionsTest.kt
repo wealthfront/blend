@@ -14,9 +14,8 @@ import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback
 import com.google.common.truth.ExpectFailure.expectFailureAbout
 import com.google.common.truth.SimpleSubjectBuilder
 import com.google.common.truth.Truth.assertThat
+import com.wealthfront.ThemedApplicationProvider.application
 import com.wealthfront.ViewSubject.Companion.VIEW_SUBJECT_FACTORY
-import com.wealthfront.blend.ALPHA_FULL
-import com.wealthfront.blend.ALPHA_TRANSPARENT
 import com.wealthfront.ktx.wrapContentHeight
 import org.junit.Before
 import org.junit.Test

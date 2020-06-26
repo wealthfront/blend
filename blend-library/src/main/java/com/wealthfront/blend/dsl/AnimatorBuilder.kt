@@ -33,52 +33,8 @@ class AnimatorBuilder(
    * Target arbitrary objects for animation.
    */
   @JvmName("targetSubjects")
-  fun <T : Any> target(subjects: List<T>) = Targetable(
-      GenericAnimationBuilder(
-          subjects,
-          currentAnimator))
-
-  /**
-   * Target [View]s for animation.
-   */
-  fun target(vararg views: View) = target(views.toList())
-
-  /**
-   * Target [View]s for animation.
-   */
-  @JvmName("targetViews")
-  fun target(views: List<View>) = Targetable(
-      ViewAnimationBuilder(
-          views,
-          currentAnimator))
-
-  /**
-   * Target [TextView]s for animation.
-   */
-  fun target(vararg views: TextView) = target(views.toList())
-
-  /**
-   * Target [TextView]s for animation.
-   */
-  @JvmName("targetTextViews")
-  fun target(views: List<TextView>) = Targetable(
-      TextViewAnimationBuilder(
-          views,
-          currentAnimator))
-
-  /**
-   * Target [ProgressBar]s for animation.
-   */
-  fun target(view: ProgressBar) = target(listOf(view))
-
-  /**
-   * Target [ProgressBar]s for animation.
-   */
-  @JvmName("targetProgressBars")
-  fun target(views: List<ProgressBar>) = Targetable(
-      ProgressBarAnimationBuilder(
-          views,
-          currentAnimator))
+  fun <T : Any> target(subjects: List<T>) =
+    Targetable(AnimationBuilder(subjects, currentAnimator))
 
   /**
    * Stagger animations on the given subjects.

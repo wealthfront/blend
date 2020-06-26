@@ -2,39 +2,27 @@ package com.wealthfront.blend.dsl
 
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat.getColor
-import com.wealthfront.blend.animator.BlendableAnimator
 import com.wealthfront.blend.properties.ProgressBarProperties.PROGRESS
 import com.wealthfront.blend.properties.TextViewProperties.TEXT_COLOR
 
 /**
- * A [ViewAnimationBuilder] that knows how to animate [TextView]-specific properties.
+ * Add a textColor animation for all [AnimationBuilder.currentSubjects] with a final value of [targetRes].
  */
-open class TextViewAnimationBuilder<Subject : TextView>(
-  currentSubjects: List<Subject>,
-  currentAnimator: BlendableAnimator
-) : ViewAnimationBuilder<Subject>(currentSubjects, currentAnimator) {
-
-  fun textColor(@ColorRes targetRes: Int) {
-    val targetColor = getColor(currentSubjects[0].context, targetRes)
-    currentSubjects.forEach { textView ->
-      currentAnimator.addAnimation(textView, TEXT_COLOR, targetColor.toFloat())
-    }
-  }
-}
+fun AnimationBuilder<TextView>.textColor(@ColorRes targetRes: Int) =
+  customProperty(getColor(currentSubjects[0].context, targetRes).toFloat(), TEXT_COLOR)
 
 /**
- * A [ViewAnimationBuilder] that knows how to animate [ProgressBar]-specific properties.
+ * Add a textColor animation for all [AnimationBuilder.currentSubjects] with a final value of [target].
  */
-open class ProgressBarAnimationBuilder<Subject : ProgressBar>(
-  currentSubjects: List<Subject>,
-  currentAnimator: BlendableAnimator
-) : ViewAnimationBuilder<Subject>(currentSubjects, currentAnimator) {
+fun AnimationBuilder<TextView>.textColorValue(@ColorInt target: Int) =
+  customProperty(target.toFloat(), TEXT_COLOR)
 
-  fun progress(target: Int) {
-    currentSubjects.forEach { progressBar ->
-      currentAnimator.addAnimation(progressBar, PROGRESS, target.toFloat())
-    }
-  }
-}
+
+/**
+ * Add a progress animation for all [AnimationBuilder.currentSubjects] with a final value of [target].
+ */
+fun AnimationBuilder<ProgressBar>.progress(target: Int) =
+  customProperty(target.toFloat(), PROGRESS)

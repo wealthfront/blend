@@ -13,9 +13,19 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat.getColor
 import com.google.common.truth.Truth.assertThat
+import com.wealthfront.ALPHA_FULL
 import com.wealthfront.ViewAssertions.assertThatView
 import com.wealthfront.application
 import com.wealthfront.blend.animator.BlendableAnimator
+import com.wealthfront.blend.dsl.collapse
+import com.wealthfront.blend.dsl.crossfadeWith
+import com.wealthfront.blend.dsl.expand
+import com.wealthfront.blend.dsl.expandAfter
+import com.wealthfront.blend.dsl.fadeIn
+import com.wealthfront.blend.dsl.fadeOut
+import com.wealthfront.blend.dsl.customProperty
+import com.wealthfront.blend.dsl.height
+import com.wealthfront.blend.dsl.textColor
 import com.wealthfront.blend.mock.ImmediateBlend
 import com.wealthfront.blend.properties.AdditiveProperty
 import com.wealthfront.blend.properties.AnimationData
@@ -76,7 +86,7 @@ class BlendDslTest {
     val builder = blend {
       immediate()
       stagger(testObjects, 10) { subject ->
-        target(subject).animations { genericProperty(10f, TestObjectProperty()) }
+        target(subject).animations { customProperty(10f, TestObjectProperty()) }
       }
     }
 
@@ -105,7 +115,7 @@ class BlendDslTest {
     )
     val builder = immediateBlend {
       stagger(testObjects, 0) { subject ->
-        target(subject).animations { genericProperty(10f, TestObjectProperty()) }
+        target(subject).animations { customProperty(10f, TestObjectProperty()) }
       }
     }
 
@@ -157,7 +167,7 @@ class BlendDslTest {
   }
 
   @Test
-  fun crossfadeWith() {
+  fun crossfadeWithTest() {
     view.alpha = 1f
     textView.alpha = 0f
     textView.visibility = INVISIBLE
@@ -308,7 +318,7 @@ class BlendDslTest {
     val testObject = TestObject(0f, 0)
     blend {
       immediate()
-      target(testObject).animations { genericProperty(10f, TestObjectProperty()) }
+      target(testObject).animations { customProperty(10f, TestObjectProperty()) }
     }.start()
     assertThat(testObject.someProperty).isWithin(0.01f).of(10f)
   }

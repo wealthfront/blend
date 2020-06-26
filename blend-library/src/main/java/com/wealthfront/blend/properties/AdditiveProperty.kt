@@ -1,5 +1,6 @@
 package com.wealthfront.blend.properties
 
+import android.view.View
 import androidx.annotation.IdRes
 import com.wealthfront.blend.animator.SinglePropertyAnimation
 import kotlin.math.roundToInt
@@ -103,4 +104,12 @@ interface AdditiveIntProperty<in Subject> : AdditiveProperty<Subject> {
       timeFraction)
       .toFloat()
   }
+}
+
+/**
+ * An [AdditiveProperty] specifically designed for views. Handles storing running animations for you.
+ */
+interface AdditiveViewProperty<in Subject : View> : AdditiveProperty<Subject> {
+
+  override fun getAnimationData(subject: Subject): AnimationData = subject.getAnimationData(id)
 }
