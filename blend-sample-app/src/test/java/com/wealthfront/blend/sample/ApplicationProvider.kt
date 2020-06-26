@@ -6,4 +6,6 @@ import androidx.test.core.app.ApplicationProvider.getApplicationContext
 
 val application: Context
   @JvmName("application")
-  get() = getApplicationContext<Application>()
+  get() = getApplicationContext<Application>().apply {
+    setTheme(R.style.AppTheme)
+  }
