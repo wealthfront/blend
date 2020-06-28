@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-  compileSdkVersion 29
-  buildToolsVersion "29.0.2"
+  compileSdkVersion Version.targetSdkVersion
+  buildToolsVersion Version.buildTools
 
   defaultConfig {
     applicationId "com.wealthfront.blend.sample"
-    minSdkVersion 21
-    targetSdkVersion 29
+    minSdkVersion Version.minSdkVersion
+    targetSdkVersion Version.targetSdkVersion
     versionCode 1
     versionName "1.0"
 
