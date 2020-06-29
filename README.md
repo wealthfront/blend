@@ -1,4 +1,7 @@
 # Blend (Beta)
+[![Build Status](https://travis-ci.org/wealthfront/blend.svg?branch=master)](https://travis-ci.org/wealthfront/blend) 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.wealthfront/blend/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.wealthfront/blend)
+
 An Android animation framework that gracefully handles interruptions. Currently in beta, as some details of the API may change in future releases.
 
 ## Features
