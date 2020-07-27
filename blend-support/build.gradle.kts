@@ -38,3 +38,5 @@ android {
 allOpen {
   annotation("com.wealthfront.ktx.Mockable")
 }
+
+apply(from = rootProject.file("gradle/gradle-mvn-push.gradle"))

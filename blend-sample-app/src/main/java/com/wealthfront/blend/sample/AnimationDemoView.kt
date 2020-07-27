@@ -1,17 +1,20 @@
 package com.wealthfront.blend.sample
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
-import android.view.View.inflate
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.annotation.VisibleForTesting
+import androidx.core.content.ContextCompat.getColor
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import com.wealthfront.blend.ALPHA_FULL
-import com.wealthfront.blend.sample.R
+import com.google.android.material.card.MaterialCardView
 import com.wealthfront.blend.Blend
-import com.wealthfront.blend.properties.AdditiveProperty
-import com.wealthfront.blend.properties.AdditiveViewProperties
+import com.wealthfront.blend.dsl.customProperty
+import com.wealthfront.blend.dsl.y
+import com.wealthfront.blend.properties.blendColor
+import com.wealthfront.blend.properties.makeAdditiveViewProperty
 import kotlin.math.absoluteValue
 
 class AnimationDemoView @JvmOverloads constructor(
@@ -28,9 +31,9 @@ class AnimationDemoView @JvmOverloads constructor(
       _bottomY = newY
     }
 
-  var demoCircle: View by bindView(R.id.demoCircle)
-  var demoCircle2: View by bindView(R.id.demoCircle2)
-  var label: View by bindView(R.id.label)
+  var demoCircle: MaterialCardView by bindView(R.id.demoCircle)
+  var demoCircle2: MaterialCardView by bindView(R.id.demoCircle2)
+  var label: TextView by bindView(R.id.label)
 
   @VisibleForTesting internal var blend: Blend
 
@@ -69,16 +72,34 @@ class AnimationDemoView @JvmOverloads constructor(
     animateCircleWithDiscontinuousVelocity(view)
   }
 
-  fun animateCircleWithBlend(view: View) = blend {
-    duration(2000)
-    target(view).animations {
-      if (view.y isCloseEnoughTo bottomY) {
-        y(topY)
-      } else {
-        y(bottomY)
-      }
+  fun animateCircleWithBlend(view: MaterialCardView) {
+    if (view.y isCloseEnoughTo bottomY) {
+      blend.pulse(demoCircle)
+    } else {
+      blend.stopPulsing()
     }
-  }.start()
+    blend {
+      duration(2000)
+      target(view).animations {
+        if (view.y isCloseEnoughTo bottomY) {
+          y(topY)
+          customProperty(Color.GREEN.toFloat(), strokeProperty)
+        } else {
+          y(bottomY)
+          customProperty(getColor(context, R.color.colorPrimary).toFloat(), strokeProperty)
+        }
+      }
+    }.start()
+  }
+
+  val strokeProperty = makeAdditiveViewProperty<MaterialCardView>(
+    R.id.demoCircle,
+    get = { subject -> subject.strokeColorStateList!!.defaultColor.toFloat() },
+    set = { subject, value -> subject.strokeColor = value.toInt() },
+    interpolateAction = { startValue, endValue, timeFraction, _ ->
+      blendColor(startValue, endValue, timeFraction)
+    }
+  )
 }
 
 private const val FLOAT_TOLERANCE = 10f

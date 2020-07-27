@@ -4,6 +4,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.common.truth.Truth.assertThat
 import com.wealthfront.blend.builder.SetPropertyValueAction
+import com.wealthfront.blend.dsl.collapse
+import com.wealthfront.blend.dsl.crossfadeWith
+import com.wealthfront.blend.dsl.expand
+import com.wealthfront.blend.dsl.fadeIn
+import com.wealthfront.blend.dsl.fadeOut
+import com.wealthfront.blend.dsl.translationX
 import com.wealthfront.blend.properties.AdditiveViewProperties.ALPHA
 import com.wealthfront.blend.properties.AdditiveViewProperties.TRANSLATION_X
 import com.wealthfront.whenever

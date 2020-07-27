@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-  implementation(project(":support"))
+  implementation(project(":blend-support"))
   implementation(Libs.appCompat)
   implementation(Libs.kotlinStdLib)
   implementation(Libs.inject)

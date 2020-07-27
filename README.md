@@ -1,16 +1,21 @@
 # Blend (Beta)
-The simplest and most powerful animation framework for Android. Currently in beta, as some details of the API may change in future releases.
+[![Build Status](https://travis-ci.org/wealthfront/blend.svg?branch=master)](https://travis-ci.org/wealthfront/blend)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.wealthfront/blend/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.wealthfront/blend)
+
+An Android animation framework that gracefully handles interruptions. Currently in beta, as some details of the API may change in future releases.
 
 ## Features
 * Smoothly blend animations started at different times together
 * Easily read and describe animations with a Kotlin DSL
 * Use it anywhere where an `Animator` is accepted (e.g. `Transition`s)
 * Animate any property on any object, not just `View`s
-* Coming soon: test animations with provided immediate and mock implementations
+* Test animations with provided immediate and mock implementations
 
 ## Use
 ```groovy
-implementation 'com.wealthfront:blend:0.1.0'
+def blendVersion = "0.2.1"
+implementation "com.wealthfront:blend:${blendVersion}"
+testImplementation "com.wealthfront:blend-test:${blendVersion}"
 ```
 
 ## Why another animation framework?
@@ -123,7 +128,7 @@ To animate properties not included in the standard DSL (see `AdditiveViewPropert
 
 Using `makeExternalAdditiveViewProperty` is recommended for non-view objects that reside in the UI.
 
-## Testing (coming soon)
+## Testing
 
 ### `MockBlend`
 For unit-testing your views, use `MockBlend`. It allows for assertions on a given subject like:
@@ -136,7 +141,7 @@ mockBlend.assertThat(otherView).isNeverAnimated()
 ```
 
 ### `ImmediateBlend`
-For integration testing, or for unit testing where you want the animations to be applied like a `set` call rather than queued for verification, use `ImmediateBlend`. Pass an instance in and all animations will run immediately, without ever starting a ValueAnimator.
+For integration testing, or for unit testing where you want the animations to be applied like a `set` call rather than queued for verification, use `ImmediateBlend`. Pass an instance in and all animations and listeners will run immediately, without ever starting a ValueAnimator.
 
 ## Configuration
 
