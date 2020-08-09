@@ -1,3 +1,6 @@
+plugins {
+  id("com.gradle.enterprise") version "3.4"
+}
 include ':blend-library'
 include ':blend-test'
 include ':blend-support'

@@ -51,7 +51,7 @@ object Version {
   val javaVersion = JavaVersion.VERSION_1_8
   val dependencyAnalyzerVersion = "0.6.0-SNAPSHOT"
   val kotlinterVersion = "1.24.0"
-  val detektVersion = "1.0.0-RC11"
+  val detektVersion = "1.11.0-RC2"
 
   val appCompatVersion = "1.1.0"
   val ktxVersion = "1.2.0"

@@ -22,7 +22,6 @@ buildscript {
 }
 
 plugins {
-    `build-scan`
     id("io.gitlab.arturbosch.detekt") version Version.detektVersion
 }
 
