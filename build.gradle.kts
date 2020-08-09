@@ -28,6 +28,11 @@ plugins {
 allprojects {
     apply(plugin = "kotlin-allopen")
 
+    val groupFromProperties: String by extra("GROUP")
+    val versionFromProperties: String by extra("VERSION")
+    group = groupFromProperties
+    version = versionFromProperties
+
     repositories {
         google()
         jcenter()

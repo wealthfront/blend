@@ -1,5 +1,7 @@
 /*
- * Originally Chris Banes's https://github.com/chrisbanes/gradle-mvn-push/
+ * Originally Chris Banes' https://github.com/chrisbanes/gradle-mvn-push/
+ *
+ * Edited by Ryan Moelter to create a publishReleasePublicationToMavenRepository task by default
  */
 
 apply plugin: 'maven-publish'
@@ -60,6 +62,11 @@ def configurePom(pom) {
 
 afterEvaluate { project ->
   publishing {
+    publications {
+      release(MavenPublication) {
+        from components.release
+      }
+    }
     repositories {
       maven {
         def releasesRepoUrl = getReleaseRepositoryUrl()
