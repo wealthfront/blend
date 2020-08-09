@@ -44,13 +44,13 @@ object Libs {
 object Version {
 
   val minSdkVersion = 21
-  val targetSdkVersion = 28
-  val buildTools = "28.0.3"
+  val targetSdkVersion = 29
+  val buildTools = "29.0.3"
 
-  val kotlinVersion = "1.3.31"
+  val kotlinVersion = "1.3.72"
   val javaVersion = JavaVersion.VERSION_1_8
   val dependencyAnalyzerVersion = "0.6.0-SNAPSHOT"
-  val kotlinterVersion = "1.24.0"
+  val kotlinterVersion = "2.4.1"
   val detektVersion = "1.11.0-RC2"
 
   val appCompatVersion = "1.1.0"
