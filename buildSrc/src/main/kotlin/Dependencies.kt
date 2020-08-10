@@ -44,7 +44,7 @@ object Libs {
 object Version {
 
   val minSdkVersion = 21
-  val targetSdkVersion = 29
+  val targetSdkVersion = 30
   val buildTools = "29.0.2"
 
   val kotlinVersion = "1.3.72"
@@ -58,7 +58,7 @@ object Version {
   val constraintLayoutVersion = "1.1.3"
   val materialVersion = "1.1.0"
   val truthVersion = "0.39"
-  val junitVersion = "4.12"
+  val junitVersion = "4.13"
   val robolectricVersion = "4.3.1"
   val jsrVersion = "3.0.2"
   val testSupportVersion="1.2.0"

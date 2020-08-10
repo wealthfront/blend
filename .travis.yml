@@ -11,8 +11,11 @@ android:
     - android-29
     - extra-google-m2repository
 
+before_install:
+  - yes | sdkManager "platforms;android-30"
+
 script:
-  - ./gradlew clean build
+  - ./gradlew clean test lintRelease lintKotlin
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
