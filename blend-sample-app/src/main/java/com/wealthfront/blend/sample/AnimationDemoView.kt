@@ -43,6 +43,7 @@ class AnimationDemoView @JvmOverloads constructor(
     setOnClickListener {
       animateCircles()
     }
+    @Suppress("DEPRECATION")
     systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
   }
 

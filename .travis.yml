@@ -15,7 +15,7 @@ before_install:
   - yes | sdkmanager "platforms;android-30"
 
 script:
-  - ./gradlew clean test lintRelease lintKotlin
+  - ./gradlew clean test
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

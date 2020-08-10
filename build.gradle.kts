@@ -27,6 +27,7 @@ plugins {
 
 allprojects {
     apply(plugin = "kotlin-allopen")
+    apply(from = "$rootDir/gradle/static-analysis.gradle")
 
     val groupFromProperties: String by extra("GROUP")
     val versionFromProperties: String by extra("VERSION_NAME")
