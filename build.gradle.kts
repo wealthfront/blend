@@ -22,12 +22,17 @@ buildscript {
 }
 
 plugins {
-    `build-scan`
     id("io.gitlab.arturbosch.detekt") version Version.detektVersion
 }
 
 allprojects {
     apply(plugin = "kotlin-allopen")
+    apply(from = "$rootDir/gradle/static-analysis.gradle")
+
+    val groupFromProperties: String by extra("GROUP")
+    val versionFromProperties: String by extra("VERSION_NAME")
+    group = groupFromProperties
+    version = versionFromProperties
 
     repositories {
         google()
