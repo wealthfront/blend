@@ -45,7 +45,7 @@ object Version {
 
   val minSdkVersion = 21
   val targetSdkVersion = 29
-  val buildTools = "29.0.3"
+  val buildTools = "29.0.2"
 
   val kotlinVersion = "1.3.72"
   val javaVersion = JavaVersion.VERSION_1_8
