@@ -29,7 +29,7 @@ allprojects {
     apply(plugin = "kotlin-allopen")
 
     val groupFromProperties: String by extra("GROUP")
-    val versionFromProperties: String by extra("VERSION")
+    val versionFromProperties: String by extra("VERSION_NAME")
     group = groupFromProperties
     version = versionFromProperties
 
