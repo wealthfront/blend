@@ -13,7 +13,7 @@ An Android animation framework that gracefully handles interruptions. Currently 
 
 ## Use
 ```groovy
-def blendVersion = "0.2.1"
+def blendVersion = "0.2.2"
 implementation "com.wealthfront:blend:${blendVersion}"
 testImplementation "com.wealthfront:blend-test:${blendVersion}"
 ```
