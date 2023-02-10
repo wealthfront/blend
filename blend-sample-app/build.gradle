@@ -34,6 +34,7 @@ android {
       returnDefaultValues = true
     }
   }
+  namespace 'com.wealthfront.blend.sample'
 }
 
 dependencies {

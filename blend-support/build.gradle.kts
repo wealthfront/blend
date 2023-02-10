@@ -27,6 +27,7 @@ android {
     unitTests.isIncludeAndroidResources = true
     unitTests.isReturnDefaultValues = true
   }
+  namespace = "com.wealthfront.blend.support"
 }
 
 allOpen {
