@@ -45,13 +45,12 @@ object Version {
 
   val minSdkVersion = 21
   val targetSdkVersion = 30
-  val buildTools = "29.0.2"
 
-  val kotlinVersion = "1.3.72"
+  val kotlinVersion = "1.7.21"
   val javaVersion = JavaVersion.VERSION_1_8
-  val dependencyAnalyzerVersion = "0.6.0-SNAPSHOT"
-  val kotlinterVersion = "2.4.1"
-  val detektVersion = "1.11.0-RC2"
+  val dependencyAnalyzerVersion = "0.8.0"
+  val kotlinterVersion = "3.13.0"
+  val detektVersion = "1.22.0"
 
   val appCompatVersion = "1.1.0"
   val ktxVersion = "1.2.0"

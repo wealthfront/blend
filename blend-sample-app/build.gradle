@@ -4,7 +4,6 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
   compileSdkVersion Version.targetSdkVersion
-  buildToolsVersion Version.buildTools
 
   defaultConfig {
     applicationId "com.wealthfront.blend.sample"
