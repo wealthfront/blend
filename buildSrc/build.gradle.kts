@@ -8,6 +8,6 @@ repositories {
 }
 
 dependencies {
-  implementation("com.android.tools.build:gradle:4.0.1")
+  implementation("com.android.tools.build:gradle:7.3.1")
   implementation(kotlin("stdlib-jdk8"))
 }
