@@ -1,6 +1,9 @@
 # Changelog
 
-## v0.2.1-v0.2.3
+## v0.2.3
+* Update dependencies
+
+## v0.2.1-v0.2.2
 * Release blend-support artifact
 * Fix build dependencies
 
