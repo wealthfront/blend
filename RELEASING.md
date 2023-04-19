@@ -1,17 +1,26 @@
 # Releasing
 
- 1. Change the version in `gradle.properties` to a non-SNAPSHOT version.
- 2. Update the `CHANGELOG.md` for the impending release.
- 3. Update the `README.md` with the new version.
- 4. `git commit -am "Prepare for release X.Y.Z."` (where X.Y.Z is the new version)
- 5. `git tag -a X.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the new version)
- 6. `./gradlew clean publish`
- 7. Update the `gradle.properties` to the next SNAPSHOT version.
- 8. `git commit -am "Prepare next development version."`
- 9. `git push && git push --tags`
- 10. Visit [Sonatype Nexus](https://oss.sonatype.org/) and promote the artifact.
+1. Change the repo's metadata to reflect the impending release 
+   - Update gradle.properties to a non-SNAPSHOT version.
+   - Update CHANGELOG.md for the impending release.
+   - Update README.md with the new version.
+2. `git commit -am "Prepare for release X.Y.Z"` (where X.Y.Z is the new version)
+3. Open a Pull Request with the above changes. Get it merged.
+4. Create a tag for this version
+   - `git tag -a X.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the version)
+   - Push this tag to GitHub: `git push && git push --tags`
 
-If step 6 or 7 fails, drop the Sonatype repo, fix the problem, commit, and start again at step 5.
+5. Someone with the necessary permissions publishes the repo:
+   - `./gradlew clean publish`
+   - Visit [Sonatype Nexus](https://oss.sonatype.org/) and promote the artifact.
+If this step fails: drop the Sonatype repo, fix the problem, commit, and start again.
+Visit [Maven Central Repository Search](https://search.maven.org/search?q=screencaptor) to verify the artifact is live. Note that it may take a few hours.
+
+6. Visit [the GitHub releases page](https://github.com/wealthfront/screencaptor/releases) and create a new release, copying the changelog from CHANGELOG.md.
+7. Change the repo's metadata to reflect the next development cycle 
+   - Change gradle.properties to the next SNAPSHOT version.
+   - `git commit -am "Prepare next development version"`
+8. Open a Pull Request with the above changes. Get it merged.
 
 ## Publish to local maven repo
 
