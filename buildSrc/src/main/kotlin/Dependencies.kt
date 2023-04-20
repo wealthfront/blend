@@ -1,4 +1,3 @@
-
 import Version.androidTestExtVersion
 import Version.appCompatVersion
 import Version.constraintLayoutVersion
@@ -23,7 +22,8 @@ object Libs {
   val kotlinterGradle = "org.jmailen.gradle:kotlinter-gradle:$kotlinterVersion"
   val kotlinAllOpen = "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
 
-  val dependencyAnalyzer = "com.vanniktech:gradle-dependency-graph-generator-plugin:$dependencyAnalyzerVersion"
+  val dependencyAnalyzer =
+    "com.vanniktech:gradle-dependency-graph-generator-plugin:$dependencyAnalyzerVersion"
 
   val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
   val appCompat = "androidx.appcompat:appcompat:$appCompatVersion"
@@ -57,12 +57,12 @@ object Version {
   val constraintLayoutVersion = "1.1.3"
   val materialVersion = "1.1.0"
   val truthVersion = "0.39"
-  val junitVersion = "4.13"
-  val robolectricVersion = "4.3.1"
+  val junitVersion = "4.13.2"
+  val robolectricVersion = "4.9.2"
   val jsrVersion = "3.0.2"
-  val testSupportVersion="1.2.0"
+  val testSupportVersion = "1.4.0"
   val mockitoVersion = "2.23.4"
-  val espressoVersion = "3.2.0"
-  val androidTestExtVersion = "1.1.1"
+  val espressoVersion = "3.5.1"
+  val androidTestExtVersion = "1.5.0"
   val javaInject = "1"
 }
