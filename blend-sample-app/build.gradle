@@ -44,6 +44,7 @@ dependencies {
   implementation(Libs.ktx)
   implementation(Libs.constraintLayout)
   implementation(Libs.material)
+  debugImplementation(Libs.leakCanary)
   testImplementation(project(":blend-test"))
   testImplementation(Libs.junit)
   testImplementation(Libs.truth)
