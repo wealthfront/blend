@@ -134,9 +134,7 @@ open class BlendableAnimator : Animator() {
       }
     })
 
-    if (repeatCount > 0) {
-      cancelAnimatorOnViewsDetached()
-    }
+    cancelAnimatorOnViewsDetached()
     queueAnimationsIfNotAlreadyQueued()
     innerAnimator.start()
     markAnimationsAsFullyQueued()
@@ -206,7 +204,10 @@ open class BlendableAnimator : Animator() {
 
   override fun getListeners(): ArrayList<AnimatorListener>? = innerAnimator.listeners
 
-  override fun cancel() = innerAnimator.cancel()
+  override fun cancel() {
+    innerAnimator.cancel()
+    animations.clear()
+  }
 
   override fun removeListener(listener: AnimatorListener) =
       innerAnimator.removeListener(ListenerWrapper(listener, this))

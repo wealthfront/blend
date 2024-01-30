@@ -9,6 +9,7 @@ import Version.junitVersion
 import Version.kotlinVersion
 import Version.kotlinterVersion
 import Version.ktxVersion
+import Version.leakCanaryVersion
 import Version.materialVersion
 import Version.mockitoVersion
 import Version.robolectricVersion
@@ -30,6 +31,7 @@ object Libs {
   val ktx = "androidx.core:core-ktx:$ktxVersion"
   val constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
   val material = "com.google.android.material:material:$materialVersion"
+  val leakCanary = "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
   val inject = "javax.inject:javax.inject:$javaInject"
   val jsr305 = "com.google.code.findbugs:jsr305:$jsrVersion"
   val testCore = "androidx.test:core:$testSupportVersion"
@@ -56,6 +58,7 @@ object Version {
   val ktxVersion = "1.2.0"
   val constraintLayoutVersion = "1.1.3"
   val materialVersion = "1.1.0"
+  val leakCanaryVersion = "2.12"
   val truthVersion = "0.39"
   val junitVersion = "4.13.2"
   val robolectricVersion = "4.9.2"
