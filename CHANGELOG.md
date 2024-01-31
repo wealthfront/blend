@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.4
+## v0.2.5
 * Fix memory leak associated with infinite pulse animation
 
 ## v0.2.3

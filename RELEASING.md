@@ -11,7 +11,7 @@
    - Push this tag to GitHub: `git push && git push --tags`
 
 5. Someone with the necessary permissions publishes the repo:
-   - `./gradlew clean publish`
+   - `./gradlew clean publish -Dorg.gradle.parallel=false`
    - Visit [Sonatype Nexus](https://oss.sonatype.org/) and promote the artifact.
 If this step fails: drop the Sonatype repo, fix the problem, commit, and start again.
 Visit [Maven Central Repository Search](https://search.maven.org/search?q=screencaptor) to verify the artifact is live. Note that it may take a few hours.
